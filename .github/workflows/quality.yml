@@ -10,8 +10,9 @@ permissions:
 
 jobs:
   verify:
-    name: Verify static application
+    name: Verify application and accessibility
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,6 +21,60 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
-      - name: Validate syntax and unit tests
+      - name: Validate syntax, extensions, unit, and smoke tests
         run: npm run ci
+
+      - name: Build Pages-compatible integration artifact
+        run: npm run build:site
+
+      - name: Audit accessibility and quality with Lighthouse CI
+        run: npx --yes @lhci/cli@0.14.x autorun
+
+      - name: Start Pages-compatible artifact for browser checks
+        run: |
+          npx --yes http-server@14.1.1 _site -p 4173 -s &
+          npx --yes playwright@1.48.2 install --with-deps chromium
+
+      - name: Audit WCAG AA with axe-core
+        run: npx --yes @axe-core/cli@4.10.2 http://127.0.0.1:4173 --tags wcag2a,wcag2aa --exit
+
+      - name: Run Playwright product flows
+        env:
+          PAYLOADFORGE_E2E_URL: http://127.0.0.1:4173
+        run: npx --yes @playwright/test@1.48.2 test web/tests/e2e.spec.js --reporter=line
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Capture and compare desktop/mobile visual baselines
+        run: |
+          mkdir -p visual-reports
+          npx --yes playwright@1.48.2 screenshot --device="Desktop Chrome" http://127.0.0.1:4173 visual-reports/desktop.png
+          npx --yes playwright@1.48.2 screenshot --device="iPhone 13" http://127.0.0.1:4173 visual-reports/mobile.png
+          node scripts/compare-visual-baselines.mjs
+
+      - name: Upload visual review artifacts and diffs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-review
+          path: visual-reports
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci
+          if-no-files-found: ignore
+          retention-days: 14

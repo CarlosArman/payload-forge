@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PayloadForge: herramientas profesionales para generar, transformar, comparar y validar payloads API.">
+  <meta name="theme-color" content="#16191d">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23cf6846'/%3E%3Cpath d='M18 21h28v22H18z' fill='none' stroke='white' stroke-width='5'/%3E%3Cpath d='M26 29l-5 3-5 3m12-6l5 3-5 3' fill='none' stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='4'/%3E%3C/svg%3E">
+  <title>PayloadForge</title>
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/utilities.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <link rel="stylesheet" href="assets/css/premium.css">
+  <link rel="stylesheet" href="assets/css/productivity.css">
+  <link rel="stylesheet" href="assets/css/onboarding.css">
+  <link rel="stylesheet" href="assets/css/editor-tools.css">
+</head>
+<body>
+  <a class="skip-link" href="#workspace">Saltar al espacio de trabajo</a>
+
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="display:none">
+    <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></symbol>
+    <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
+    <symbol id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+    <symbol id="icon-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="icon-file-json" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 12a1 1 0 0 0-1 1v1a1 1 0 0 1-1 1 1 1 0 0 1 1 1v1a1 1 0 0 0 1 1"/><path d="M14 18a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1 1 1 0 0 1-1-1v-1a1 1 0 0 0-1-1"/></symbol>
+    <symbol id="icon-route" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></symbol>
+    <symbol id="icon-braces" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"/><path d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/></symbol>
+    <symbol id="icon-repeat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></symbol>
+    <symbol id="icon-code-xml" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></symbol>
+    <symbol id="icon-git-compare" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><path d="M11 18H8a2 2 0 0 1-2-2V9"/></symbol>
+    <symbol id="icon-diff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v14"/><path d="M5 10h14"/><path d="M5 21h14"/></symbol>
+    <symbol id="icon-database" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></symbol>
+    <symbol id="icon-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+    <symbol id="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></symbol>
+    <symbol id="icon-sparkles" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></symbol>
+    <symbol id="icon-trash-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></symbol>
+    <symbol id="icon-share-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></symbol>
+    <symbol id="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></symbol>
+    <symbol id="icon-terminal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></symbol>
+    <symbol id="icon-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+    <symbol id="icon-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.78 5.63 6.22.9-4.5 4.39 1.06 6.2L12 17.2l-5.56 2.92 1.06-6.2L3 9.53l6.22-.9L12 3Z"/></symbol>
+  </svg>
+
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="header-brand">
+        <button class="icon-button mobile-menu-button" id="menu-toggle" aria-label="Abrir menú de herramientas" aria-expanded="false" aria-controls="sidebar">
+          <svg class="icon" aria-hidden="true" width="18" height="18"><use href="#icon-menu"/></svg>
+        </button>
+        <a href="#schema" class="brand" aria-label="PayloadForge, ir a inicio">
+          <span class="brand-mark" aria-hidden="true">
+            <svg class="icon" aria-hidden="true" width="16" height="16"><use href="#icon-terminal"/></svg>
+          </span>
+          <span>Payload<span>Forge</span></span>
+        </a>
+        <span class="brand-divider" aria-hidden="true"></span>
+        <p class="tagline">Generate <span>•</span> Transform <span>•</span> Compare <span>•</span> Validate</p>
+      </div>
+      <div class="header-actions">
+        <label class="language-control" for="language-select">
+          <span class="sr-only">Idioma</span>
+          <select id="language-select" aria-label="Idioma">
+            <option value="es">ES</option>
+            <option value="en">EN</option>
+          </select>
+        </label>
+        <label class="global-search" for="tool-search">
+          <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-search"/></svg>
+          <input id="tool-search" type="search" placeholder="Buscar herramientas…" autocomplete="off">
+          <kbd>⌘K</kbd>
+        </label>
+        <button class="icon-button" id="preferences-toggle" aria-label="Abrir preferencias" title="Preferencias">⚙</button>
+        <button class="icon-button" id="theme-toggle" aria-label="Cambiar a tema claro" title="Cambiar tema">
+          <svg class="icon" id="theme-icon" aria-hidden="true" width="18" height="18"><use href="#icon-sun"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="sidebar-overlay" id="sidebar-overlay" hidden></div>
+    <aside class="sidebar" id="sidebar" aria-label="Navegación de herramientas">
+      <nav id="tool-navigation">
+        <section class="nav-group nav-group-productivity" aria-labelledby="productivity-tools-title">
+          <h2 id="productivity-tools-title">ACCESO RÁPIDO</h2>
+          <div class="nav-group-list nav-productivity-list" id="favorite-tools-list" aria-label="Herramientas favoritas"></div>
+          <div class="nav-group-list nav-productivity-list" id="recent-tools-list" aria-label="Herramientas recientes"></div>
+        </section>
+        <section class="nav-group" data-group="data">
+          <h2><button class="nav-group-toggle" type="button" aria-expanded="true" aria-controls="data-tools-list"><span data-i18n="dataTools">Herramientas de datos</span><svg class="nav-group-chevron icon" aria-hidden="true" width="14" height="14"><use href="#icon-chevron-down"/></svg></button></h2>
+          <div class="nav-group-list" id="data-tools-list">
+            <a href="#schema" class="nav-item" data-tool="schema"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-file-json"/></svg><span data-tool-label="schema">Generador de JSON Schema</span></a>
+            <a href="#jsonpath" class="nav-item" data-tool="jsonpath"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-route"/></svg><span data-tool-label="jsonpath">Explorador JSONPath</span></a>
+            <a href="#formatter" class="nav-item" data-tool="formatter"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-braces"/></svg><span data-tool-label="formatter">Formateador JSON</span></a>
+            <a href="#typescript" class="nav-item" data-tool="typescript"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-braces"/></svg><span data-tool-label="typescript">JSON → TypeScript</span></a>
+            <a href="#openapi" class="nav-item" data-tool="openapi"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-route"/></svg><span data-tool-label="openapi">Explorador OpenAPI</span></a>
+          </div>
+        </section>
+        <section class="nav-group" data-group="transform">
+          <h2><button class="nav-group-toggle" type="button" aria-expanded="true" aria-controls="transform-tools-list"><span data-i18n="transformTools">Herramientas de transformación</span><svg class="nav-group-chevron icon" aria-hidden="true" width="14" height="14"><use href="#icon-chevron-down"/></svg></button></h2>
+          <div class="nav-group-list" id="transform-tools-list">
+            <a href="#yaml" class="nav-item" data-tool="yaml"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-repeat"/></svg><span data-tool-label="yaml">Conversor JSON ↔ YAML</span></a>
+            <a href="#xpath" class="nav-item" data-tool="xpath"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-code-xml"/></svg><span data-tool-label="xpath">Generador XML → XPath</span></a>
+            <a href="#jwt" class="nav-item" data-tool="jwt"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-braces"/></svg><span data-tool-label="jwt">Inspector JWT</span></a>
+            <a href="#encoder" class="nav-item" data-tool="encoder"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-repeat"/></svg><span data-tool-label="encoder">Codificador / Decodificador</span></a>
+            <a href="#redactor" class="nav-item" data-tool="redactor"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-x"/></svg><span data-tool-label="redactor">Redactor de secretos</span></a>
+            <a href="#curl" class="nav-item" data-tool="curl"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-terminal"/></svg><span data-tool-label="curl">cURL → Fetch</span></a>
+          </div>
+        </section>
+        <section class="nav-group" data-group="validation">
+          <h2><button class="nav-group-toggle" type="button" aria-expanded="true" aria-controls="validation-tools-list"><span data-i18n="validationTools">Herramientas de validación</span><svg class="nav-group-chevron icon" aria-hidden="true" width="14" height="14"><use href="#icon-chevron-down"/></svg></button></h2>
+          <div class="nav-group-list" id="validation-tools-list">
+            <a href="#validator" class="nav-item" data-tool="validator"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-file-json"/></svg><span data-tool-label="validator">Validador JSON Schema</span></a>
+            <a href="#compare" class="nav-item" data-tool="compare"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-git-compare"/></svg><span data-tool-label="compare">Comparar JSON</span></a>
+            <a href="#diff" class="nav-item" data-tool="diff"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-diff"/></svg><span data-tool-label="diff">Diferencias JSON</span></a>
+          </div>
+        </section>
+        <section class="nav-group" data-group="testing">
+          <h2><button class="nav-group-toggle" type="button" aria-expanded="true" aria-controls="testing-tools-list"><span data-i18n="testingTools">Herramientas de prueba</span><svg class="nav-group-chevron icon" aria-hidden="true" width="14" height="14"><use href="#icon-chevron-down"/></svg></button></h2>
+          <div class="nav-group-list" id="testing-tools-list">
+            <a href="#fixtures" class="nav-item" data-tool="fixtures"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-database"/></svg><span data-tool-label="fixtures">Fixtures desde JSON Schema</span></a>
+            <a href="#mock" class="nav-item" data-tool="mock"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-database"/></svg><span data-tool-label="mock">Generador de datos mock</span></a>
+            <a href="#regex" class="nav-item" data-tool="regex"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-search"/></svg><span data-tool-label="regex">Probador de Regex</span></a>
+            <a href="#uuid" class="nav-item" data-tool="uuid"><svg class="icon" aria-hidden="true" width="15" height="15"><use href="#icon-file-json"/></svg><span data-tool-label="uuid">Generador / Validador UUID</span></a>
+          </div>
+        </section>
+      </nav>
+      <div class="sidebar-footer">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="ready-label">Listo para trabajar</span>
+        <span class="offline-badge" id="connection-status">En línea</span>
+      </div>
+    </aside>
+
+    <main id="workspace" class="workspace" tabindex="-1">
+      <div class="workspace-heading">
+        <div>
+          <p class="eyebrow" id="tool-category">HERRAMIENTA DE DATOS</p>
+          <h1 id="tool-title">Generador de JSON Schema</h1>
+          <p id="tool-description">Genera un JSON Schema preciso a partir de cualquier payload JSON válido.</p>
+        </div>
+        <div class="workspace-heading-actions">
+          <button class="tool-favorite-button" id="tool-favorite-toggle" type="button" aria-pressed="false" aria-label="Añadir Generador de JSON Schema a favoritas" title="Añadir a favoritas">
+            <svg class="icon" aria-hidden="true" width="16" height="16"><use href="#icon-star"/></svg>
+          </button>
+          <output class="tool-status" id="tool-status" aria-live="polite">Listo</output>
+        </div>
+      </div>
+
+      <section id="tool-options" class="tool-options" aria-label="Opciones de herramienta"></section>
+
+      <section class="editor-find" id="editor-find" aria-label="Buscar en editores" hidden>
+        <label class="sr-only" for="editor-find-query">Buscar en editores</label>
+        <input id="editor-find-query" type="search" autocomplete="off" placeholder="Buscar en entrada o resultado…">
+        <label class="sr-only" for="editor-find-target">Panel de búsqueda</label>
+        <select id="editor-find-target" aria-label="Panel de búsqueda">
+          <option value="input">Entrada</option>
+          <option value="output">Resultado</option>
+        </select>
+        <output id="editor-find-count" class="editor-find-count" aria-live="polite">0 resultados</output>
+        <label class="sr-only" for="editor-goto-line">Ir a línea</label>
+        <input id="editor-goto-line" class="editor-goto-line" type="number" min="1" inputmode="numeric" placeholder="Línea" aria-label="Ir a línea">
+        <button class="editor-find-action" id="editor-goto-apply" type="button" aria-label="Ir a línea">↳</button>
+        <button class="editor-find-action" id="editor-find-previous" type="button" aria-label="Coincidencia anterior">↑</button>
+        <button class="editor-find-action" id="editor-find-next" type="button" aria-label="Siguiente coincidencia">↓</button>
+        <button class="editor-find-action" id="editor-find-close" type="button" aria-label="Cerrar búsqueda">×</button>
+      </section>
+
+      <aside class="workflow-guide" id="workflow-guide" aria-labelledby="workflow-guide-title">
+        <div class="workflow-guide-heading">
+          <div>
+            <p class="workflow-guide-eyebrow" data-i18n="onboarding.eyebrow">FLUJO RÁPIDO</p>
+            <h2 id="workflow-guide-title" data-i18n="onboarding.title">Pega, ejecuta y reutiliza</h2>
+          </div>
+          <button class="workflow-guide-toggle" id="workflow-guide-toggle" type="button" aria-expanded="true" aria-controls="workflow-guide-content">
+            <span data-i18n="onboarding.hide">Ocultar ayuda</span>
+          </button>
+        </div>
+        <div class="workflow-guide-content" id="workflow-guide-content">
+          <ol class="workflow-steps">
+            <li><strong>1.</strong><span data-i18n="onboarding.stepOne">Pega o importa un payload en el editor de entrada.</span></li>
+            <li><strong>2.</strong><span><span data-i18n="onboarding.stepTwoBefore">Ejecuta con</span> <kbd>Ctrl/⌘</kbd> + <kbd>Enter</kbd><span data-i18n="onboarding.stepTwoAfter">.</span></span></li>
+            <li><strong>3.</strong><span data-i18n="onboarding.stepThree">Copia, descarga o comparte el resultado generado localmente.</span></li>
+          </ol>
+          <div class="workflow-shortcuts" aria-label="Keyboard shortcuts">
+            <span><kbd>Ctrl/⌘</kbd><kbd>K</kbd> <span data-i18n="onboarding.search">Buscar herramienta</span></span>
+            <span><kbd>Tab</kbd> <span data-i18n="onboarding.indent">Indentar entrada</span></span>
+          </div>
+        </div>
+      </aside>
+
+      <div class="mobile-editor-tabs" role="tablist" aria-label="Paneles del editor">
+        <button class="mobile-editor-tab is-active" id="input-tab" type="button" role="tab" aria-selected="true" aria-controls="input-editor">Entrada</button>
+        <button class="mobile-editor-tab" id="output-tab" type="button" role="tab" aria-selected="false" aria-controls="output-editor">Resultado</button>
+      </div>
+      <section class="editor-workspace" aria-label="Editores">
+        <article class="editor-card editor-input">
+          <div class="editor-header">
+            <div><span class="editor-dot input-dot" aria-hidden="true"></span><h2 id="input-label">JSON de entrada</h2></div>
+            <div class="editor-header-actions">
+              <button class="editor-action" id="import-button" type="button" aria-label="Importar archivo local">
+                <svg class="icon" aria-hidden="true" width="13" height="13"><use href="#icon-upload"/></svg>
+                Importar
+              </button>
+              <span class="editor-meta" id="input-meta">0 caracteres</span>
+            </div>
+          </div>
+          <div class="code-editor-shell">
+            <pre class="line-numbers" id="input-lines" aria-hidden="true">1</pre>
+            <pre class="syntax-layer" id="input-highlight" aria-hidden="true"><code></code></pre>
+            <label class="sr-only" id="input-editor-label" for="input-editor">Editor de entrada</label>
+            <textarea id="input-editor" class="code-editor" aria-labelledby="input-label" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Pega tu JSON aquí…"></textarea>
+          </div>
+          <label class="sr-only" for="file-import">Seleccionar archivo para importar</label>
+          <input id="file-import" class="sr-only" type="file" accept=".json,.yaml,.yml,.xml,.txt,application/json,application/xml,text/plain,text/yaml">
+          <div class="editor-footer"><span id="input-status">Esperando entrada</span><span id="input-position" aria-live="polite">Línea 1, columna 1</span><span id="tab-hint">Tab para indentar</span></div>
+        </article>
+
+        <button class="resize-handle" id="resize-handle" type="button" aria-label="Redimensionar editores"></button>
+
+        <article class="editor-card editor-output">
+          <div class="editor-header">
+            <div><span class="editor-dot output-dot" aria-hidden="true"></span><h2 id="output-label">Resultado</h2></div>
+            <span class="editor-meta" id="output-meta">0 caracteres</span>
+          </div>
+          <div class="code-editor-shell">
+            <pre class="line-numbers" id="output-lines" aria-hidden="true">1</pre>
+            <pre class="syntax-layer" id="output-highlight" aria-hidden="true"><code></code></pre>
+            <label class="sr-only" id="output-editor-label" for="output-editor">Resultado</label>
+            <textarea id="output-editor" class="code-editor" aria-labelledby="output-label" readonly spellcheck="false" placeholder="El resultado aparecerá aquí…"></textarea>
+            <div class="editor-empty-state" id="output-empty-state" aria-hidden="true">
+              <span class="editor-empty-state-mark" aria-hidden="true">→</span>
+              <strong id="output-empty-title">Resultado pendiente</strong>
+              <span id="output-empty-description">Ejecuta la herramienta para ver el resultado.</span>
+            </div>
+          </div>
+          <div class="editor-footer"><span id="output-status">Sin resultado</span><span id="output-hint">Solo lectura</span></div>
+        </article>
+      </section>
+
+      <section class="results-panel" id="results-panel" aria-label="Resultados complementarios" hidden></section>
+
+      <div class="action-bar" role="toolbar" aria-label="Acciones de herramienta">
+        <button class="button button-primary" id="execute-button">
+          <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-play"/></svg>
+          <span id="execute-label">Generar schema</span>
+          <kbd>Ctrl ↵</kbd>
+        </button>
+        <button class="button button-secondary" id="copy-button" disabled>
+          <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-copy"/></svg>
+          <span id="copy-label">Copiar resultado</span>
+        </button>
+        <button class="button button-secondary" id="download-button" disabled>
+          <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-download"/></svg>
+          <span id="download-label">Descargar</span>
+        </button>
+        <button class="button button-secondary" id="use-output-button" disabled>
+          <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-arrow-right"/></svg>
+          <span id="use-output-label">Usar como entrada</span>
+        </button>
+        <button class="button button-ghost" id="example-button">
+          <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-sparkles"/></svg>
+          <span id="example-label">Cargar ejemplo</span>
+        </button>
+        <button class="button button-ghost" id="clear-button">
+          <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-trash-2"/></svg>
+          <span id="clear-label">Limpiar</span>
+        </button>
+        <button class="button button-ghost" id="share-button">
+          <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-share-2"/></svg>
+          <span id="share-label">Compartir</span>
+        </button>
+        <button class="button button-ghost" id="save-preset-button">
+          <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-sparkles"/></svg>
+          <span data-i18n="savePreset">Guardar preset</span>
+        </button>
+        <button class="button button-ghost" id="load-preset-button">
+          <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-database"/></svg>
+          <span data-i18n="loadPreset">Cargar preset</span>
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+  <dialog id="preferences-dialog" class="command-dialog preferences-dialog" aria-labelledby="preferences-title" aria-describedby="preferences-description">
+    <div class="command-palette preferences-panel">
+      <header class="command-heading preferences-heading">
+        <div class="preferences-title-group">
+          <span class="preferences-title-icon" aria-hidden="true">⚙</span>
+          <div>
+            <p class="preferences-eyebrow">ESPACIO DE TRABAJO</p>
+            <h2 id="preferences-title">Preferencias</h2>
+            <p id="preferences-description">Personaliza la experiencia de uso de PayloadForge.</p>
+          </div>
+        </div>
+        <button class="icon-button preferences-close" id="preferences-close" type="button" aria-label="Cerrar preferencias" title="Cerrar preferencias">
+          <svg class="icon" aria-hidden="true" width="20" height="20"><use href="#icon-x"/></svg>
+        </button>
+      </header>
+
+      <div class="preferences-controls">
+        <section class="preferences-section" aria-labelledby="preferences-appearance">
+          <div class="preferences-section-heading">
+            <h3 id="preferences-appearance">Apariencia</h3>
+            <p>Define cómo se ve y se siente tu espacio de trabajo.</p>
+          </div>
+          <div class="preferences-grid">
+            <label class="preference-field">
+              <span class="preference-field-label">Tema</span>
+              <span class="preference-select">
+                <span class="preference-select-icon" aria-hidden="true">◐</span>
+                <select id="preference-theme" aria-label="Tema de la aplicación">
+                  <option value="dark">Oscuro</option>
+                  <option value="light">Claro</option>
+                  <option value="system">Sistema</option>
+                </select>
+              </span>
+            </label>
+            <label class="preference-field">
+              <span class="preference-field-label">Densidad</span>
+              <span class="preference-select">
+                <span class="preference-select-icon" aria-hidden="true">≡</span>
+                <select id="preference-density" aria-label="Densidad de la interfaz">
+                  <option value="comfortable">Cómoda</option>
+                  <option value="compact">Compacta</option>
+                </select>
+              </span>
+            </label>
+          </div>
+        </section>
+
+        <section class="preferences-section" aria-labelledby="preferences-editor">
+          <div class="preferences-section-heading">
+            <h3 id="preferences-editor">Editor</h3>
+            <p>Optimiza el editor para tu forma de trabajar.</p>
+          </div>
+
+          <div class="preference-font-size">
+            <div>
+              <span class="preference-row-title">Tamaño de fuente</span>
+              <span class="preference-row-description">Ajusta la legibilidad del editor.</span>
+            </div>
+            <output class="font-size-value" id="preference-font-size-value" for="preference-font-size">13 px</output>
+            <label class="sr-only" for="preference-font-size">Tamaño de fuente del editor</label>
+            <input id="preference-font-size" type="range" min="11" max="20" value="13" step="1" aria-valuetext="13 píxeles">
+          </div>
+
+          <div class="preferences-switch-list">
+            <label class="preference-switch-row" for="preference-wrap">
+              <span><strong>Ajustar líneas automáticamente</strong><small>Evita el desplazamiento horizontal en textos largos.</small></span>
+              <input id="preference-wrap" type="checkbox" role="switch" aria-checked="false" aria-label="Ajustar líneas automáticamente">
+              <span class="switch-control" aria-hidden="true"></span>
+            </label>
+            <label class="preference-switch-row" for="preference-line-numbers">
+              <span><strong>Mostrar números de línea</strong><small>Facilita la referencia y revisión de payloads.</small></span>
+              <input id="preference-line-numbers" type="checkbox" role="switch" aria-checked="false" aria-label="Mostrar números de línea">
+              <span class="switch-control" aria-hidden="true"></span>
+            </label>
+            <label class="preference-switch-row" for="preference-syntax-highlight">
+              <span><strong>Resaltado de sintaxis</strong><small>Distingue claves, valores y estructuras JSON.</small></span>
+              <input id="preference-syntax-highlight" type="checkbox" role="switch" aria-checked="false" aria-label="Activar resaltado de sintaxis">
+              <span class="switch-control" aria-hidden="true"></span>
+            </label>
+            <label class="preference-switch-row" for="preference-autocomplete">
+              <span><strong>Autocompletado</strong><small>Prepara el editor para sugerencias inteligentes.</small></span>
+              <input id="preference-autocomplete" type="checkbox" role="switch" aria-checked="false" aria-label="Activar autocompletado">
+              <span class="switch-control" aria-hidden="true"></span>
+            </label>
+          </div>
+        </section>
+
+        <section class="preferences-section" aria-labelledby="preferences-privacy">
+          <div class="preferences-section-heading">
+            <h3 id="preferences-privacy">Datos y privacidad</h3>
+            <p>Todo el historial se mantiene únicamente en este navegador.</p>
+          </div>
+          <label class="preference-switch-row preference-history-toggle" for="preference-history">
+            <span><strong>Activar historial local</strong><small>Guarda herramienta, estado y hora; nunca payloads ni resultados.</small></span>
+            <input id="preference-history" type="checkbox" role="switch" aria-checked="false" aria-label="Activar historial local">
+            <span class="switch-control" aria-hidden="true"></span>
+          </label>
+
+          <article class="preferences-history" aria-labelledby="history-card-title">
+            <div class="history-card-heading">
+              <span class="history-card-icon" aria-hidden="true">◷</span>
+              <div>
+                <strong id="history-card-title">Historial local</strong>
+                <span id="history-status">Desactivado; no se guardan operaciones.</span>
+              </div>
+            </div>
+            <dl class="history-metrics">
+              <div><dt>Operaciones</dt><dd id="history-count">0</dd></div>
+              <div><dt>Espacio usado</dt><dd id="history-size">0 B</dd></div>
+              <div><dt>Actualizado</dt><dd id="history-updated">—</dd></div>
+            </dl>
+            <button class="button button-danger-soft" id="history-clear" type="button" aria-describedby="history-clear-hint">
+              <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-trash-2"/></svg>
+              <span>Limpiar historial</span>
+            </button>
+            <p class="history-clear-hint" id="history-clear-hint">Se solicitará confirmación antes de eliminar la actividad guardada.</p>
+          </article>
+        </section>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="preset-dialog" class="command-dialog" aria-labelledby="preset-title" aria-describedby="preset-description">
+    <form method="dialog" class="command-palette">
+      <div class="command-heading">
+        <h2 id="preset-title" data-i18n="presetDialogTitle">Guardar preset local</h2>
+        <button class="icon-button" id="preset-close" type="button" aria-label="Cerrar">×</button>
+      </div>
+      <p id="preset-description" data-i18n="presetDialogDescription">Guarda solo esta entrada en este navegador. Los resultados no se almacenan.</p>
+      <label class="sr-only" for="preset-name" data-i18n="presetName">Nombre del preset</label>
+      <input id="preset-name" type="text" maxlength="60" autocomplete="off" placeholder="Ej. Payload de usuario">
+      <div class="action-bar">
+        <button class="button button-secondary" id="preset-cancel" type="button" data-i18n="cancel">Cancelar</button>
+        <button class="button button-primary" id="preset-save" type="button" data-i18n="saveLocally">Guardar localmente</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="presets-dialog" class="command-dialog" aria-labelledby="presets-title" aria-describedby="presets-description">
+    <div class="command-palette">
+      <div class="command-heading">
+        <div>
+          <h2 id="presets-title" data-i18n="presetsTitle">Presets locales</h2>
+          <p id="presets-description" data-i18n="presetsDescription">Entradas guardadas solo para esta herramienta en este navegador.</p>
+        </div>
+        <button class="icon-button" id="presets-close" type="button" aria-label="Cerrar presets">×</button>
+      </div>
+      <div id="presets-list" class="command-results" aria-label="Presets disponibles"></div>
+      <div class="action-bar">
+        <button class="button button-secondary" id="presets-export" type="button" data-i18n="exportPresets">Exportar presets</button>
+        <button class="button button-secondary" id="presets-import" type="button" data-i18n="importPresets">Importar presets</button>
+        <button class="button button-danger-soft" id="presets-clear" type="button" hidden>Limpiar presets de esta herramienta</button>
+      </div>
+      <label class="sr-only" for="presets-import-file" data-i18n="importPresets">Importar presets</label>
+      <input id="presets-import-file" class="sr-only" type="file" accept=".json,application/json">
+    </div>
+  </dialog>
+
+  <dialog id="command-dialog" class="command-dialog" aria-labelledby="command-title" aria-describedby="command-help">
+    <div class="command-palette">
+      <div class="command-heading">
+        <h2 id="command-title">Ir a una herramienta</h2>
+        <button class="icon-button" id="command-close" type="button" aria-label="Cerrar buscador">
+          <svg class="icon" aria-hidden="true" width="16" height="16"><use href="#icon-x"/></svg>
+        </button>
+      </div>
+      <p class="sr-only" id="command-help">Usa las flechas arriba y abajo para recorrer herramientas. Presiona Enter para abrir la seleccionada o Escape para cerrar.</p>
+      <label class="sr-only" for="command-search">Buscar herramientas</label>
+      <input id="command-search" type="search" placeholder="Buscar herramientas…" autocomplete="off" aria-describedby="command-help">
+      <div id="command-results" class="command-results" aria-label="Herramientas disponibles"></div>
+    </div>
+  </dialog>
+
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

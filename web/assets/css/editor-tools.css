@@ -1,0 +1,100 @@
+/* Enterprise editor utilities: find/navigation surface */
+.editor-find {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) 104px auto 62px repeat(4, 30px);
+  gap: 6px;
+  align-items: center;
+  max-width: 760px;
+  margin: 0 0 14px auto;
+  padding: 7px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-sm);
+}
+
+.editor-find[hidden] {
+  display: none;
+}
+
+.editor-find input,
+.editor-find select {
+  width: 100%;
+  min-height: 30px;
+  padding: 0 9px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.editor-find input:focus,
+.editor-find select:focus {
+  border-color: var(--focus);
+  outline: none;
+}
+
+.editor-goto-line {
+  min-width: 0;
+  text-align: center;
+}
+
+.editor-find-count {
+  min-width: 76px;
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.editor-find-action {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  padding: 0;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  font: 600 14px/1 var(--font-mono);
+  transition: color var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.editor-find-action:hover:not(:disabled) {
+  color: var(--text);
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+}
+
+.editor-find-action:disabled {
+  opacity: .45;
+}
+
+@media (max-width: 767px) {
+  .editor-find {
+    grid-template-columns: minmax(0, 1fr) 88px 56px repeat(4, 30px);
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+
+  .editor-find-count {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    min-width: 0;
+    text-align: left;
+  }
+}
+
+@media (max-width: 479px) {
+  .editor-find {
+    grid-template-columns: 1fr 56px repeat(4, 30px);
+  }
+
+  .editor-find select {
+    grid-column: 1 / -1;
+  }
+}

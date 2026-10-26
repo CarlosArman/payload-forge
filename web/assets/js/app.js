@@ -24,20 +24,26 @@ import { getLanguage, setLanguage, t, toolText } from "./i18n.js";
 const tools = [schemaGenerator, jsonPathExplorer, formatter, typescriptGenerator, yamlConverter, xpathGenerator, jwtInspector, encoderDecoder, secretsRedactor, curlGenerator, openApiExplorer, schemaValidator, schemaFixtures, regexTester, uuidGenerator, jsonCompare, jsonDiff, mockGenerator];
 const registry = new Map(tools.map((tool) => [tool.id, tool]));
 const HISTORY_KEY = "payloadforge.history";
+const PRESETS_KEY = "payloadforge.presets";
 const MAX_HISTORY_ENTRIES = 20;
+const MAX_PRESETS_PER_TOOL = 20;
+const MAX_PRESET_BYTES = 200 * 1024;
+const MAX_PRESET_IMPORT_BYTES = 1024 * 1024;
 const $ = (selector) => document.querySelector(selector);
 
 const elements = {
   category: $("#tool-category"), title: $("#tool-title"), description: $("#tool-description"),
   status: $("#tool-status"), options: $("#tool-options"), input: $("#input-editor"), output: $("#output-editor"),
   inputLabel: $("#input-label"), outputLabel: $("#output-label"), execute: $("#execute-button"),
-  executeLabel: $("#execute-label"), copy: $("#copy-button"), download: $("#download-button"),
+  executeLabel: $("#execute-label"), copy: $("#copy-button"), download: $("#download-button"), useOutput: $("#use-output-button"),
   clear: $("#clear-button"), example: $("#example-button"), share: $("#share-button"), results: $("#results-panel"),
   importButton: $("#import-button"), fileImport: $("#file-import"), inputCard: $(".editor-input"),
-  inputMeta: $("#input-meta"), outputMeta: $("#output-meta"), inputStatus: $("#input-status"),
+  inputMeta: $("#input-meta"), outputMeta: $("#output-meta"), inputStatus: $("#input-status"), inputPosition: $("#input-position"),
   inputLines: $("#input-lines"), outputLines: $("#output-lines"),
   inputHighlight: $("#input-highlight code"), outputHighlight: $("#output-highlight code"),
   outputStatus: $("#output-status"), outputEmpty: $("#output-empty-state"), nav: $("#tool-navigation"), theme: $("#theme-toggle"),
+  favorites: $("#favorite-tools-list"), recents: $("#recent-tools-list"), favoriteToggle: $("#tool-favorite-toggle"),
+  workflowGuide: $("#workflow-guide"), workflowGuideToggle: $("#workflow-guide-toggle"),
   menu: $("#menu-toggle"), sidebar: $("#sidebar"), overlay: $("#sidebar-overlay"), connection: $("#connection-status"),
   dialog: $("#command-dialog"), commandSearch: $("#command-search"), commandResults: $("#command-results"),
   globalSearch: $("#tool-search"), workspace: $("#workspace"), resize: $("#resize-handle"),
@@ -51,8 +57,15 @@ const elements = {
   historyCount: $("#history-count"), historySize: $("#history-size"), historyUpdated: $("#history-updated"),
   commandClose: $("#command-close"), language: $("#language-select"),
   readyLabel: $("#ready-label"), tabHint: $("#tab-hint"), outputHint: $("#output-hint"),
-  copyLabel: $("#copy-label"), downloadLabel: $("#download-label"), exampleLabel: $("#example-label"),
+  copyLabel: $("#copy-label"), downloadLabel: $("#download-label"), useOutputLabel: $("#use-output-label"), exampleLabel: $("#example-label"),
   clearLabel: $("#clear-label"), shareLabel: $("#share-label"),
+  find: $("#editor-find"), findQuery: $("#editor-find-query"), findTarget: $("#editor-find-target"),
+  findCount: $("#editor-find-count"), findPrevious: $("#editor-find-previous"), findNext: $("#editor-find-next"),
+  findClose: $("#editor-find-close"), gotoLine: $("#editor-goto-line"), gotoApply: $("#editor-goto-apply"),
+  savePreset: $("#save-preset-button"), loadPreset: $("#load-preset-button"), presetDialog: $("#preset-dialog"), presetName: $("#preset-name"),
+  presetSave: $("#preset-save"), presetClose: $("#preset-close"), presetCancel: $("#preset-cancel"),
+  presetsDialog: $("#presets-dialog"), presetsList: $("#presets-list"), presetsClose: $("#presets-close"), presetsClear: $("#presets-clear"),
+  presetsExport: $("#presets-export"), presetsImport: $("#presets-import"), presetsImportFile: $("#presets-import-file"),
 };
 
 const examples = {
@@ -82,6 +95,9 @@ let commandIndex = -1;
 let commandOrigin = null;
 let menuOrigin = null;
 let preferencesOrigin = null;
+let findMatches = [];
+let findIndex = -1;
+let findOrigin = null;
 
 function applyLanguage() {
   const language = getLanguage();
@@ -96,6 +112,12 @@ function applyLanguage() {
   elements.outputHint.textContent = t("readOnly");
   elements.copyLabel.textContent = t("copyResult");
   elements.downloadLabel.textContent = t("download");
+  elements.useOutputLabel.textContent = t("useOutput");
+  elements.presetName.placeholder = t("presetNamePlaceholder");
+  elements.presetClose.setAttribute("aria-label", t("close"));
+  elements.presetsClose.setAttribute("aria-label", t("close"));
+  elements.presetsExport.textContent = t("exportPresets");
+  elements.presetsImport.textContent = t("importPresets");
   elements.exampleLabel.textContent = t("loadExample");
   elements.clearLabel.textContent = t("clear");
   elements.shareLabel.textContent = t("share");
@@ -108,6 +130,7 @@ function applyLanguage() {
   document.querySelector("#command-help").textContent = t("commandHelp");
   document.querySelectorAll(".nav-group").forEach((group) => {
     const toggle = group.querySelector(".nav-group-toggle");
+    if (!toggle) return;
     const isExpanded = toggle.getAttribute("aria-expanded") === "true";
     const actions = {
       es: { expanded: "contraer", collapsed: "expandir" },
@@ -116,6 +139,7 @@ function applyLanguage() {
     const state = isExpanded ? "expanded" : "collapsed";
     toggle.setAttribute("aria-label", `${toggle.firstElementChild.textContent}: ${actions[language][state]}`);
   });
+  updateWorkflowGuide();
 }
 
 function toast(message, type = "success") {
@@ -270,9 +294,108 @@ function renderEditorLayers() {
   renderEditorLayer(elements.output, elements.outputLines, elements.outputHighlight);
 }
 
+function updateInputPosition() {
+  const beforeCursor = elements.input.value.slice(0, elements.input.selectionStart);
+  const lines = beforeCursor.split("\n");
+  const line = lines.length;
+  const column = lines.at(-1).length + 1;
+  elements.inputPosition.textContent = getLanguage() === "es"
+    ? `Línea ${line}, columna ${column}`
+    : `Line ${line}, column ${column}`;
+}
+
 function updateCounters() {
   elements.inputMeta.textContent = `${elements.input.value.length.toLocaleString()} ${t("chars")}`;
   elements.outputMeta.textContent = `${elements.output.value.length.toLocaleString()} ${t("chars")}`;
+  updateInputPosition();
+  renderEditorLayers();
+}
+
+function selectedFindEditor() {
+  return elements.findTarget.value === "output" ? elements.output : elements.input;
+}
+
+function findStatusText(query) {
+  const language = getLanguage();
+  if (!query) return language === "es" ? "Escribe para buscar" : "Type to search";
+  return language === "es" ? `${findMatches.length} resultados` : `${findMatches.length} results`;
+}
+
+function updateFindResults({ selectMatch = false } = {}) {
+  const query = elements.findQuery.value;
+  const editor = selectedFindEditor();
+  const source = editor.value.toLocaleLowerCase();
+  const needle = query.toLocaleLowerCase();
+  findMatches = [];
+  findIndex = -1;
+
+  if (needle) {
+    let index = source.indexOf(needle);
+    while (index !== -1) {
+      findMatches.push(index);
+      index = source.indexOf(needle, index + needle.length);
+    }
+  }
+
+  elements.findCount.textContent = findStatusText(query);
+  elements.findPrevious.disabled = !findMatches.length;
+  elements.findNext.disabled = !findMatches.length;
+  if (selectMatch && findMatches.length) moveFindMatch(1);
+}
+
+function moveFindMatch(direction) {
+  if (!findMatches.length) return;
+  findIndex = (findIndex + direction + findMatches.length) % findMatches.length;
+  const editor = selectedFindEditor();
+  const start = findMatches[findIndex];
+  editor.focus({ preventScroll: true });
+  editor.setSelectionRange(start, start + elements.findQuery.value.length);
+  const line = editor.value.slice(0, start).split("\n").length;
+  const lineHeight = Number.parseFloat(getComputedStyle(editor).lineHeight) || 20;
+  editor.scrollTop = Math.max(0, (line - 3) * lineHeight);
+  renderEditorLayers();
+  elements.findCount.textContent = `${findIndex + 1}/${findMatches.length}`;
+}
+
+function openEditorFind(origin = document.activeElement) {
+  if (!elements.find.hidden) {
+    elements.findQuery.focus();
+    return;
+  }
+  findOrigin = origin instanceof HTMLElement ? origin : null;
+  elements.find.hidden = false;
+  const activeEditor = document.activeElement === elements.output ? "output" : "input";
+  elements.findTarget.value = activeEditor;
+  if (activeEditor === "output" && window.innerWidth < 768) setMobileEditorPanel("output");
+  updateFindResults();
+  elements.findQuery.focus();
+}
+
+function closeEditorFind() {
+  if (elements.find.hidden) return;
+  elements.find.hidden = true;
+  elements.findQuery.value = "";
+  elements.gotoLine.value = "";
+  findMatches = [];
+  findIndex = -1;
+  findOrigin?.focus();
+  findOrigin = null;
+}
+
+function goToEditorLine() {
+  const editor = selectedFindEditor();
+  const lines = editor.value.split("\n");
+  const requestedLine = Number(elements.gotoLine.value);
+  if (!Number.isInteger(requestedLine) || requestedLine < 1) return;
+
+  const line = Math.min(requestedLine, lines.length);
+  const start = lines.slice(0, line - 1).join("\n").length + (line > 1 ? 1 : 0);
+  const lineHeight = Number.parseFloat(getComputedStyle(editor).lineHeight) || 20;
+
+  editor.focus({ preventScroll: true });
+  editor.setSelectionRange(start, start);
+  editor.scrollTop = Math.max(0, (line - 3) * lineHeight);
+  elements.gotoLine.value = String(line);
   renderEditorLayers();
 }
 
@@ -350,12 +473,104 @@ function setMobileEditorPanel(panel) {
   elements.outputTab.setAttribute("aria-selected", String(showOutput));
 }
 
+function updateWorkflowGuide() {
+  const collapsed = Boolean(store.get("workflowGuideCollapsed"));
+  elements.workflowGuide.classList.toggle("is-collapsed", collapsed);
+  elements.workflowGuideToggle.setAttribute("aria-expanded", String(!collapsed));
+  elements.workflowGuideToggle.textContent = collapsed ? t("onboarding.show") : t("onboarding.hide");
+  elements.workflowGuide.querySelector(".workflow-shortcuts").setAttribute("aria-label", t("onboarding.shortcutsLabel"));
+}
+
+function toggleWorkflowGuide() {
+  store.set("workflowGuideCollapsed", !store.get("workflowGuideCollapsed"), { persist: true });
+  updateWorkflowGuide();
+}
+
+function productivityCopy() {
+  return getLanguage() === "es"
+    ? { favorites: "Favoritas", recent: "Recientes", empty: "Aún no hay herramientas.", add: "Añadir a favoritas", remove: "Quitar de favoritas" }
+    : { favorites: "Favorites", recent: "Recent", empty: "No tools yet.", add: "Add to favorites", remove: "Remove from favorites" };
+}
+
+function validToolIds(ids) {
+  return [...new Set(Array.isArray(ids) ? ids : [])].filter((id) => registry.has(id));
+}
+
+function renderProductivityList(element, title, ids) {
+  const copy = productivityCopy();
+  const items = validToolIds(ids);
+  element.replaceChildren();
+  element.hidden = !items.length;
+
+  if (items.length) {
+    const label = document.createElement("p");
+    label.className = "nav-productivity-label";
+    label.textContent = title;
+    element.append(label);
+
+    items.forEach((id) => {
+      const link = document.createElement("a");
+      const shortcut = document.createElement("span");
+      const text = document.createElement("span");
+
+      link.href = `#${id}`;
+      link.className = "nav-item nav-item-compact";
+      link.dataset.tool = id;
+      shortcut.className = "nav-item-shortcut";
+      shortcut.setAttribute("aria-hidden", "true");
+      shortcut.textContent = "→";
+      text.textContent = toolText(id).title;
+
+      link.append(shortcut, text);
+      element.append(link);
+    });
+  }
+
+  element.setAttribute("aria-label", items.length ? title : `${title}. ${copy.empty}`);
+}
+
+function updateProductivityNavigation() {
+  const favorites = validToolIds(store.get("favoriteTools"));
+  const recents = validToolIds(store.get("recentTools")).filter((id) => !favorites.includes(id));
+  const copy = productivityCopy();
+
+  renderProductivityList(elements.favorites, copy.favorites, favorites);
+  renderProductivityList(elements.recents, copy.recent, recents);
+
+  const isFavorite = favorites.includes(activeTool.id);
+  const action = isFavorite ? copy.remove : copy.add;
+  elements.favoriteToggle.setAttribute("aria-pressed", String(isFavorite));
+  elements.favoriteToggle.setAttribute("aria-label", `${action}: ${toolText(activeTool.id).title}`);
+  elements.favoriteToggle.title = action;
+  elements.favoriteToggle.classList.toggle("is-favorite", isFavorite);
+}
+
+function recordRecentTool(toolId) {
+  const recents = validToolIds(store.get("recentTools")).filter((id) => id !== toolId);
+  store.set("recentTools", [toolId, ...recents].slice(0, 5), { persist: true });
+}
+
+function toggleFavoriteTool() {
+  const favorites = validToolIds(store.get("favoriteTools"));
+  const isFavorite = favorites.includes(activeTool.id);
+  const next = isFavorite ? favorites.filter((id) => id !== activeTool.id) : [...favorites, activeTool.id].slice(0, 8);
+  store.set("favoriteTools", next, { persist: true });
+  updateProductivityNavigation();
+  toast(isFavorite ? `${toolText(activeTool.id).title} eliminada de favoritas.` : `${toolText(activeTool.id).title} añadida a favoritas.`, "success");
+}
+
+function clearInputError() {
+  elements.input.removeAttribute("aria-invalid");
+  elements.inputCard.classList.remove("has-error");
+}
+
 function resetResult() {
   elements.output.value = "";
   elements.results.replaceChildren();
   elements.results.hidden = true;
   elements.copy.disabled = true;
   elements.download.disabled = true;
+  elements.useOutput.disabled = true;
   elements.outputStatus.textContent = t("noResult");
   updateOutputEmptyState();
   updateCounters();
@@ -385,6 +600,8 @@ function renderTool(toolId) {
   document.querySelectorAll(".nav-item").forEach((link) => {
     link.toggleAttribute("aria-current", link.dataset.tool === toolId);
   });
+  recordRecentTool(toolId);
+  updateProductivityNavigation();
   closeMenu();
   elements.workspace.focus({ preventScroll: true });
 }
@@ -407,13 +624,38 @@ function renderSupplementaryResults(result) {
   result.bindResults?.(elements.results, { copy: copyText, toast });
 }
 
+function focusErrorLocation(error) {
+  const location = /(?:línea|line)\s+(\d+),\s*(?:columna|column)\s+(\d+)/i.exec(error);
+  if (!location) {
+    elements.input.focus({ preventScroll: true });
+    return;
+  }
+
+  const line = Math.max(1, Number(location[1]));
+  const column = Math.max(1, Number(location[2]));
+  const lines = elements.input.value.split("\n");
+  const before = lines.slice(0, line - 1);
+  const start = Math.min(elements.input.value.length, before.join("\n").length + (line > 1 ? 1 : 0) + column - 1);
+  const lineHeight = Number.parseFloat(getComputedStyle(elements.input).lineHeight) || 20;
+
+  elements.input.focus({ preventScroll: true });
+  elements.input.setSelectionRange(start, Math.min(start + 1, elements.input.value.length));
+  elements.input.scrollTop = Math.max(0, (line - 3) * lineHeight);
+  renderEditorLayers();
+}
+
 function renderExecutionError(error) {
   const language = getLanguage();
+  const recovery = language === "es" ? " Corrige la entrada e inténtalo de nuevo." : " Correct the input and try again.";
+  const message = `${error}${recovery}`;
   setStatus(language === "es" ? "Error accionable" : "Actionable error", "error");
-  elements.inputStatus.textContent = error;
+  elements.inputStatus.textContent = message;
+  elements.input.setAttribute("aria-invalid", "true");
+  elements.inputCard.classList.add("has-error");
   elements.outputStatus.textContent = language === "es" ? "No se generó resultado" : "No result generated";
   updateOutputEmptyState();
-  toast(error, "error");
+  toast(message, "error");
+  focusErrorLocation(error);
 }
 
 function renderExecutionResult(result) {
@@ -425,6 +667,7 @@ function renderExecutionResult(result) {
   elements.inputStatus.textContent = t("processed");
   elements.copy.disabled = !elements.output.value;
   elements.download.disabled = !elements.output.value;
+  elements.useOutput.disabled = !elements.output.value;
   setStatus(t("complete"));
   renderSupplementaryResults(result);
   recordHistory(result);
@@ -455,6 +698,7 @@ function execute() {
     return;
   }
 
+  clearInputError();
   setStatus(t("working"), "working");
   setExecutionState(true);
   window.requestAnimationFrame(runActiveTool);
@@ -486,6 +730,9 @@ function getCommandTools(query = "") {
     { id: "example", title: t("loadExample"), category: language === "es" ? "Acción" : "Action" },
     { id: "clear", title: t("clear"), category: language === "es" ? "Acción" : "Action" },
     { id: "copy", title: t("copyResult"), category: language === "es" ? "Acción" : "Action" },
+    { id: "use-output", title: t("useOutput"), category: language === "es" ? "Acción" : "Action" },
+    { id: "save-preset", title: language === "es" ? "Guardar preset local" : "Save local preset", category: language === "es" ? "Acción" : "Action" },
+    { id: "load-preset", title: language === "es" ? "Cargar preset local" : "Load local preset", category: language === "es" ? "Acción" : "Action" },
     { id: "theme", title: language === "es" ? "Cambiar tema" : "Switch theme", category: language === "es" ? "Acción" : "Action" },
   ].map((action) => ({ ...action, action: action.id }));
 
@@ -524,14 +771,24 @@ function closeCommand() {
   commandOrigin = null;
 }
 
+function runCommandAction(action) {
+  const actions = {
+    execute,
+    example: () => elements.example.click(),
+    clear: () => elements.clear.click(),
+    copy: () => elements.copy.click(),
+    "use-output": () => elements.useOutput.click(),
+    "save-preset": openPresetDialog,
+    "load-preset": openPresetsDialog,
+    theme: switchTheme,
+  };
+  actions[action]?.();
+}
+
 function selectCommand(toolId, router, action) {
   if (action) {
     closeCommand();
-    if (action === "execute") execute();
-    if (action === "example") elements.example.click();
-    if (action === "clear") elements.clear.click();
-    if (action === "copy") elements.copy.click();
-    if (action === "theme") switchTheme();
+    runCommandAction(action);
     return;
   }
 
@@ -593,6 +850,182 @@ function applyPreferences() {
   document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#16191d" : "#ebece7";
   setThemeIcon(theme);
   renderEditorLayers();
+}
+
+function presets() {
+  try {
+    const value = JSON.parse(localStorage.getItem(PRESETS_KEY) ?? "{}");
+    return value && typeof value === "object" ? value : {};
+  } catch {
+    return {};
+  }
+}
+
+function savePreset() {
+  const name = elements.presetName.value.trim();
+  const input = elements.input.value;
+  if (!name) {
+    elements.presetName.focus();
+    return;
+  }
+  if (!input.trim()) {
+    toast(getLanguage() === "es" ? "Añade una entrada antes de guardar un preset." : "Add input before saving a preset.", "error");
+    return;
+  }
+  if (new Blob([input]).size > MAX_PRESET_BYTES) {
+    toast(getLanguage() === "es" ? "El preset supera el límite local de 200 KB." : "The preset exceeds the 200 KB local limit.", "error");
+    return;
+  }
+
+  const allPresets = presets();
+  const toolPresets = Array.isArray(allPresets[activeTool.id]) ? allPresets[activeTool.id] : [];
+  allPresets[activeTool.id] = [{ name, input, at: new Date().toISOString() }, ...toolPresets]
+    .filter((preset, index, list) => list.findIndex((candidate) => candidate.name === preset.name) === index)
+    .slice(0, MAX_PRESETS_PER_TOOL);
+  localStorage.setItem(PRESETS_KEY, JSON.stringify(allPresets));
+  elements.presetDialog.close();
+  toast(t("presetSaved"), "success");
+}
+
+function openPresetDialog() {
+  elements.presetName.value = "";
+  elements.presetDialog.showModal();
+  elements.presetName.focus();
+}
+
+function closePresetDialog() {
+  if (elements.presetDialog.open) elements.presetDialog.close();
+  elements.savePreset.focus();
+}
+
+function currentToolPresets() {
+  const values = presets()[activeTool.id];
+  return Array.isArray(values) ? values : [];
+}
+
+function presetClearLabel() {
+  return t("clearToolPresets");
+}
+
+function presetClearConfirmationLabel() {
+  return t("confirmClear");
+}
+
+function normalizeImportedPresets(value) {
+  if (value?.version !== 1 || value.tool !== activeTool.id || !Array.isArray(value.presets)) return null;
+
+  const uniqueNames = new Set();
+  const sanitized = [];
+  for (const preset of value.presets) {
+    if (!preset || typeof preset.name !== "string" || typeof preset.input !== "string") continue;
+    const name = preset.name.trim().slice(0, 60);
+    if (!name || uniqueNames.has(name) || new Blob([preset.input]).size > MAX_PRESET_BYTES) continue;
+    uniqueNames.add(name);
+    sanitized.push({ name, input: preset.input, at: typeof preset.at === "string" ? preset.at : new Date().toISOString() });
+  }
+  return sanitized;
+}
+
+function exportPresets() {
+  const payload = {
+    version: 1,
+    tool: activeTool.id,
+    presets: currentToolPresets(),
+  };
+  downloadText(JSON.stringify(payload, null, 2), `payloadforge-${activeTool.id}-presets.json`);
+  toast(t("presetsExported"), "success");
+}
+
+async function importPresets(file) {
+  if (!file) return;
+  try {
+    if (file.size > MAX_PRESET_IMPORT_BYTES) throw new Error("preset import exceeds local limit");
+    const imported = normalizeImportedPresets(JSON.parse(await file.text()));
+    if (!imported) throw new Error("invalid preset file");
+
+    const allPresets = presets();
+    const merged = [...imported, ...currentToolPresets()]
+      .filter((preset, index, list) => list.findIndex((candidate) => candidate.name === preset.name) === index)
+      .slice(0, MAX_PRESETS_PER_TOOL);
+    allPresets[activeTool.id] = merged;
+    localStorage.setItem(PRESETS_KEY, JSON.stringify(allPresets));
+    renderPresetList();
+    toast(t("presetsImported"), "success");
+  } catch {
+    toast(t("invalidPresetFile"), "error");
+  } finally {
+    elements.presetsImportFile.value = "";
+  }
+}
+
+function renderPresetList() {
+  const values = currentToolPresets();
+  elements.presetsList.replaceChildren();
+  elements.presetsClear.hidden = !values.length;
+  elements.presetsClear.textContent = presetClearLabel();
+
+  if (!values.length) {
+    const empty = document.createElement("p");
+    empty.className = "command-item";
+    empty.setAttribute("role", "status");
+    empty.textContent = t("noPresets");
+    elements.presetsList.append(empty);
+    return;
+  }
+
+  values.forEach((preset, index) => {
+    const row = document.createElement("div");
+    row.className = "command-item preset-item";
+
+    const load = document.createElement("button");
+    load.type = "button";
+    load.className = "preset-load";
+    load.textContent = preset.name;
+    load.addEventListener("click", () => {
+      elements.input.value = preset.input;
+      elements.input.dispatchEvent(new Event("input"));
+      resetResult();
+      elements.inputStatus.textContent = t("presetLoaded");
+      elements.presetsDialog.close();
+      elements.input.focus();
+    });
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "preset-remove";
+    remove.textContent = t("remove");
+    remove.addEventListener("click", () => {
+      if (remove.dataset.confirm !== "true") {
+        remove.dataset.confirm = "true";
+        remove.textContent = t("confirm");
+        window.setTimeout(() => {
+          if (remove.dataset.confirm !== "true") return;
+          delete remove.dataset.confirm;
+          remove.textContent = t("remove");
+        }, 3500);
+        return;
+      }
+      const allPresets = presets();
+      allPresets[activeTool.id] = currentToolPresets().filter((_, presetIndex) => presetIndex !== index);
+      localStorage.setItem(PRESETS_KEY, JSON.stringify(allPresets));
+      renderPresetList();
+      toast(t("presetDeleted"), "success");
+    });
+
+    row.append(load, remove);
+    elements.presetsList.append(row);
+  });
+}
+
+function openPresetsDialog() {
+  renderPresetList();
+  elements.presetsDialog.showModal();
+  elements.presetsDialog.querySelector("button")?.focus();
+}
+
+function closePresetsDialog() {
+  if (elements.presetsDialog.open) elements.presetsDialog.close();
+  elements.loadPreset.focus();
 }
 
 function historyEntries() {
@@ -684,8 +1117,12 @@ function switchTheme() {
 function bindEditorEnhancements() {
   elements.input.addEventListener("input", () => {
     drafts.set(activeTool.id, elements.input.value);
+    clearInputError();
     elements.inputStatus.textContent = elements.input.value ? t("unsavedChanges") : t("waiting");
     updateCounters();
+  });
+  ["keyup", "click", "select"].forEach((eventName) => {
+    elements.input.addEventListener(eventName, updateInputPosition);
   });
   elements.input.addEventListener("scroll", () => renderEditorLayer(elements.input, elements.inputLines, elements.inputHighlight));
   elements.output.addEventListener("scroll", () => renderEditorLayer(elements.output, elements.outputLines, elements.outputHighlight));
@@ -696,7 +1133,7 @@ function bindEditorEnhancements() {
       elements.input.setRangeText("  ", selectionStart, selectionEnd, "end");
       elements.input.dispatchEvent(new Event("input"));
     }
-    if (event.ctrlKey && event.key === "Enter") {
+    if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
       event.preventDefault();
       execute();
     }
@@ -733,6 +1170,81 @@ function bindEditorEnhancements() {
 
 function bindEvents(router) {
   elements.execute.addEventListener("click", execute);
+  elements.favoriteToggle.addEventListener("click", toggleFavoriteTool);
+  elements.savePreset.addEventListener("click", openPresetDialog);
+  elements.loadPreset.addEventListener("click", openPresetsDialog);
+  elements.presetSave.addEventListener("click", savePreset);
+  elements.presetClose.addEventListener("click", closePresetDialog);
+  elements.presetCancel.addEventListener("click", closePresetDialog);
+  elements.presetDialog.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closePresetDialog();
+  });
+  elements.presetDialog.addEventListener("click", (event) => {
+    if (event.target === elements.presetDialog) closePresetDialog();
+  });
+  elements.presetName.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      savePreset();
+    }
+  });
+  elements.presetsClose.addEventListener("click", closePresetsDialog);
+  elements.presetsExport.addEventListener("click", exportPresets);
+  elements.presetsImport.addEventListener("click", () => elements.presetsImportFile.click());
+  elements.presetsImportFile.addEventListener("change", (event) => importPresets(event.target.files[0]));
+  elements.presetsClear.addEventListener("click", () => {
+    if (elements.presetsClear.dataset.confirm !== "true") {
+      elements.presetsClear.dataset.confirm = "true";
+      elements.presetsClear.textContent = presetClearConfirmationLabel();
+      window.setTimeout(() => {
+        if (elements.presetsClear.dataset.confirm !== "true") return;
+        delete elements.presetsClear.dataset.confirm;
+        elements.presetsClear.textContent = presetClearLabel();
+      }, 3500);
+      return;
+    }
+
+    const allPresets = presets();
+    delete allPresets[activeTool.id];
+    localStorage.setItem(PRESETS_KEY, JSON.stringify(allPresets));
+    delete elements.presetsClear.dataset.confirm;
+    renderPresetList();
+    toast(t("presetsCleared"), "success");
+  });
+  elements.presetsDialog.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closePresetsDialog();
+  });
+  elements.presetsDialog.addEventListener("click", (event) => {
+    if (event.target === elements.presetsDialog) closePresetsDialog();
+  });
+  elements.findQuery.addEventListener("input", () => updateFindResults({ selectMatch: true }));
+  elements.findTarget.addEventListener("change", () => {
+    if (elements.findTarget.value === "output" && window.innerWidth < 768) setMobileEditorPanel("output");
+    updateFindResults({ selectMatch: true });
+  });
+  elements.findPrevious.addEventListener("click", () => moveFindMatch(-1));
+  elements.findNext.addEventListener("click", () => moveFindMatch(1));
+  elements.gotoApply.addEventListener("click", goToEditorLine);
+  elements.gotoLine.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      goToEditorLine();
+    }
+  });
+  elements.findClose.addEventListener("click", closeEditorFind);
+  elements.findQuery.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeEditorFind();
+    }
+    if (event.key === "Enter") {
+      event.preventDefault();
+      moveFindMatch(event.shiftKey ? -1 : 1);
+    }
+  });
+  elements.workflowGuideToggle.addEventListener("click", toggleWorkflowGuide);
   elements.inputTab.addEventListener("click", () => setMobileEditorPanel("input"));
   elements.outputTab.addEventListener("click", () => setMobileEditorPanel("output"));
   elements.copy.addEventListener("click", async () => {
@@ -743,6 +1255,15 @@ function bindEvents(router) {
     const extension = activeTool.id === "yaml" && document.querySelector("#yaml-direction")?.value === "json-to-yaml" ? "yaml" : "json";
     downloadText(elements.output.value, `payloadforge-${activeTool.id}.${extension}`, extension === "yaml" ? "text/yaml;charset=utf-8" : undefined);
     toast(t("downloaded"), "success");
+  });
+  elements.useOutput.addEventListener("click", () => {
+    if (!elements.output.value) return;
+    elements.input.value = elements.output.value;
+    elements.input.dispatchEvent(new Event("input"));
+    resetResult();
+    elements.inputStatus.textContent = t("outputUsed");
+    elements.input.focus();
+    toast(t("outputUsed"), "success");
   });
   elements.importButton.addEventListener("click", () => elements.fileImport.click());
   elements.fileImport.addEventListener("change", (event) => importFile(event.target.files[0]));
@@ -932,19 +1453,34 @@ function bindEvents(router) {
       event.preventDefault();
       openCommand(document.activeElement);
     }
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "f") {
+      event.preventDefault();
+      openEditorFind(document.activeElement);
+    }
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "g") {
+      event.preventDefault();
+      openEditorFind(document.activeElement);
+      elements.gotoLine.focus();
+    }
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
+      event.preventDefault();
+      openPresetDialog();
+    }
   });
 }
 
 function boot() {
   if (!store.get("theme")) store.set("theme", "system", { persist: true });
   setLanguage(store.get("language") ?? "es");
-  document.querySelectorAll(".nav-group").forEach((group) => {
+  document.querySelectorAll(".nav-group[data-group]").forEach((group) => {
     const collapsed = store.get(`nav-group-${group.dataset.group}`) === "collapsed";
     group.classList.toggle("is-collapsed", collapsed);
     group.querySelector(".nav-group-toggle").setAttribute("aria-expanded", String(!collapsed));
   });
   applyLanguage();
   applyPreferences();
+  updateProductivityNavigation();
+  updateWorkflowGuide();
   window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
     if (store.get("theme") === "system") applyPreferences();
   });

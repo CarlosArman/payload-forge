@@ -1,0 +1,6 @@
+{
+  "name": "@payloadforge/core",
+  "private": true,
+  "type": "module",
+  "description": "Shared browser-safe PayloadForge transforms."
+}

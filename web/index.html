@@ -13,6 +13,10 @@
   <link rel="stylesheet" href="assets/css/components.css">
   <link rel="stylesheet" href="assets/css/utilities.css">
   <link rel="stylesheet" href="assets/css/responsive.css">
+  <link rel="stylesheet" href="assets/css/premium.css">
+  <link rel="stylesheet" href="assets/css/productivity.css">
+  <link rel="stylesheet" href="assets/css/onboarding.css">
+  <link rel="stylesheet" href="assets/css/editor-tools.css">
 </head>
 <body>
   <a class="skip-link" href="#workspace">Saltar al espacio de trabajo</a>
@@ -42,6 +46,7 @@
     <symbol id="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></symbol>
     <symbol id="icon-terminal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></symbol>
     <symbol id="icon-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+    <symbol id="icon-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.78 5.63 6.22.9-4.5 4.39 1.06 6.2L12 17.2l-5.56 2.92 1.06-6.2L3 9.53l6.22-.9L12 3Z"/></symbol>
   </svg>
 
   <div class="app-shell">
@@ -82,6 +87,11 @@
     <div class="sidebar-overlay" id="sidebar-overlay" hidden></div>
     <aside class="sidebar" id="sidebar" aria-label="Navegación de herramientas">
       <nav id="tool-navigation">
+        <section class="nav-group nav-group-productivity" aria-labelledby="productivity-tools-title">
+          <h2 id="productivity-tools-title">ACCESO RÁPIDO</h2>
+          <div class="nav-group-list nav-productivity-list" id="favorite-tools-list" aria-label="Herramientas favoritas"></div>
+          <div class="nav-group-list nav-productivity-list" id="recent-tools-list" aria-label="Herramientas recientes"></div>
+        </section>
         <section class="nav-group" data-group="data">
           <h2><button class="nav-group-toggle" type="button" aria-expanded="true" aria-controls="data-tools-list"><span data-i18n="dataTools">Herramientas de datos</span><svg class="nav-group-chevron icon" aria-hidden="true" width="14" height="14"><use href="#icon-chevron-down"/></svg></button></h2>
           <div class="nav-group-list" id="data-tools-list">
@@ -135,10 +145,55 @@
           <h1 id="tool-title">Generador de JSON Schema</h1>
           <p id="tool-description">Genera un JSON Schema preciso a partir de cualquier payload JSON válido.</p>
         </div>
-        <output class="tool-status" id="tool-status" aria-live="polite">Listo</output>
+        <div class="workspace-heading-actions">
+          <button class="tool-favorite-button" id="tool-favorite-toggle" type="button" aria-pressed="false" aria-label="Añadir Generador de JSON Schema a favoritas" title="Añadir a favoritas">
+            <svg class="icon" aria-hidden="true" width="16" height="16"><use href="#icon-star"/></svg>
+          </button>
+          <output class="tool-status" id="tool-status" aria-live="polite">Listo</output>
+        </div>
       </div>
 
       <section id="tool-options" class="tool-options" aria-label="Opciones de herramienta"></section>
+
+      <section class="editor-find" id="editor-find" aria-label="Buscar en editores" hidden>
+        <label class="sr-only" for="editor-find-query">Buscar en editores</label>
+        <input id="editor-find-query" type="search" autocomplete="off" placeholder="Buscar en entrada o resultado…">
+        <label class="sr-only" for="editor-find-target">Panel de búsqueda</label>
+        <select id="editor-find-target" aria-label="Panel de búsqueda">
+          <option value="input">Entrada</option>
+          <option value="output">Resultado</option>
+        </select>
+        <output id="editor-find-count" class="editor-find-count" aria-live="polite">0 resultados</output>
+        <label class="sr-only" for="editor-goto-line">Ir a línea</label>
+        <input id="editor-goto-line" class="editor-goto-line" type="number" min="1" inputmode="numeric" placeholder="Línea" aria-label="Ir a línea">
+        <button class="editor-find-action" id="editor-goto-apply" type="button" aria-label="Ir a línea">↳</button>
+        <button class="editor-find-action" id="editor-find-previous" type="button" aria-label="Coincidencia anterior">↑</button>
+        <button class="editor-find-action" id="editor-find-next" type="button" aria-label="Siguiente coincidencia">↓</button>
+        <button class="editor-find-action" id="editor-find-close" type="button" aria-label="Cerrar búsqueda">×</button>
+      </section>
+
+      <aside class="workflow-guide" id="workflow-guide" aria-labelledby="workflow-guide-title">
+        <div class="workflow-guide-heading">
+          <div>
+            <p class="workflow-guide-eyebrow" data-i18n="onboarding.eyebrow">FLUJO RÁPIDO</p>
+            <h2 id="workflow-guide-title" data-i18n="onboarding.title">Pega, ejecuta y reutiliza</h2>
+          </div>
+          <button class="workflow-guide-toggle" id="workflow-guide-toggle" type="button" aria-expanded="true" aria-controls="workflow-guide-content">
+            <span data-i18n="onboarding.hide">Ocultar ayuda</span>
+          </button>
+        </div>
+        <div class="workflow-guide-content" id="workflow-guide-content">
+          <ol class="workflow-steps">
+            <li><strong>1.</strong><span data-i18n="onboarding.stepOne">Pega o importa un payload en el editor de entrada.</span></li>
+            <li><strong>2.</strong><span><span data-i18n="onboarding.stepTwoBefore">Ejecuta con</span> <kbd>Ctrl/⌘</kbd> + <kbd>Enter</kbd><span data-i18n="onboarding.stepTwoAfter">.</span></span></li>
+            <li><strong>3.</strong><span data-i18n="onboarding.stepThree">Copia, descarga o comparte el resultado generado localmente.</span></li>
+          </ol>
+          <div class="workflow-shortcuts" aria-label="Keyboard shortcuts">
+            <span><kbd>Ctrl/⌘</kbd><kbd>K</kbd> <span data-i18n="onboarding.search">Buscar herramienta</span></span>
+            <span><kbd>Tab</kbd> <span data-i18n="onboarding.indent">Indentar entrada</span></span>
+          </div>
+        </div>
+      </aside>
 
       <div class="mobile-editor-tabs" role="tablist" aria-label="Paneles del editor">
         <button class="mobile-editor-tab is-active" id="input-tab" type="button" role="tab" aria-selected="true" aria-controls="input-editor">Entrada</button>
@@ -164,7 +219,7 @@
           </div>
           <label class="sr-only" for="file-import">Seleccionar archivo para importar</label>
           <input id="file-import" class="sr-only" type="file" accept=".json,.yaml,.yml,.xml,.txt,application/json,application/xml,text/plain,text/yaml">
-          <div class="editor-footer"><span id="input-status">Esperando entrada</span><span id="tab-hint">Tab para indentar</span></div>
+          <div class="editor-footer"><span id="input-status">Esperando entrada</span><span id="input-position" aria-live="polite">Línea 1, columna 1</span><span id="tab-hint">Tab para indentar</span></div>
         </article>
 
         <button class="resize-handle" id="resize-handle" type="button" aria-label="Redimensionar editores"></button>
@@ -205,6 +260,10 @@
           <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-download"/></svg>
           <span id="download-label">Descargar</span>
         </button>
+        <button class="button button-secondary" id="use-output-button" disabled>
+          <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-arrow-right"/></svg>
+          <span id="use-output-label">Usar como entrada</span>
+        </button>
         <button class="button button-ghost" id="example-button">
           <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-sparkles"/></svg>
           <span id="example-label">Cargar ejemplo</span>
@@ -216,6 +275,14 @@
         <button class="button button-ghost" id="share-button">
           <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-share-2"/></svg>
           <span id="share-label">Compartir</span>
+        </button>
+        <button class="button button-ghost" id="save-preset-button">
+          <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-sparkles"/></svg>
+          <span data-i18n="savePreset">Guardar preset</span>
+        </button>
+        <button class="button button-ghost" id="load-preset-button">
+          <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-database"/></svg>
+          <span data-i18n="loadPreset">Cargar preset</span>
         </button>
       </div>
     </main>
@@ -342,6 +409,42 @@
           </article>
         </section>
       </div>
+    </div>
+  </dialog>
+
+  <dialog id="preset-dialog" class="command-dialog" aria-labelledby="preset-title" aria-describedby="preset-description">
+    <form method="dialog" class="command-palette">
+      <div class="command-heading">
+        <h2 id="preset-title" data-i18n="presetDialogTitle">Guardar preset local</h2>
+        <button class="icon-button" id="preset-close" type="button" aria-label="Cerrar">×</button>
+      </div>
+      <p id="preset-description" data-i18n="presetDialogDescription">Guarda solo esta entrada en este navegador. Los resultados no se almacenan.</p>
+      <label class="sr-only" for="preset-name" data-i18n="presetName">Nombre del preset</label>
+      <input id="preset-name" type="text" maxlength="60" autocomplete="off" placeholder="Ej. Payload de usuario">
+      <div class="action-bar">
+        <button class="button button-secondary" id="preset-cancel" type="button" data-i18n="cancel">Cancelar</button>
+        <button class="button button-primary" id="preset-save" type="button" data-i18n="saveLocally">Guardar localmente</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="presets-dialog" class="command-dialog" aria-labelledby="presets-title" aria-describedby="presets-description">
+    <div class="command-palette">
+      <div class="command-heading">
+        <div>
+          <h2 id="presets-title" data-i18n="presetsTitle">Presets locales</h2>
+          <p id="presets-description" data-i18n="presetsDescription">Entradas guardadas solo para esta herramienta en este navegador.</p>
+        </div>
+        <button class="icon-button" id="presets-close" type="button" aria-label="Cerrar presets">×</button>
+      </div>
+      <div id="presets-list" class="command-results" aria-label="Presets disponibles"></div>
+      <div class="action-bar">
+        <button class="button button-secondary" id="presets-export" type="button" data-i18n="exportPresets">Exportar presets</button>
+        <button class="button button-secondary" id="presets-import" type="button" data-i18n="importPresets">Importar presets</button>
+        <button class="button button-danger-soft" id="presets-clear" type="button" hidden>Limpiar presets de esta herramienta</button>
+      </div>
+      <label class="sr-only" for="presets-import-file" data-i18n="importPresets">Importar presets</label>
+      <input id="presets-import-file" class="sr-only" type="file" accept=".json,application/json">
     </div>
   </dialog>
 

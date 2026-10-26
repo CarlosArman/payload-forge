@@ -30,16 +30,8 @@ jobs:
       - name: Validate syntax and unit tests
         run: npm run ci
 
-      - name: Assemble Pages artifact
-        run: |
-          mkdir -p _site
-          cp -R web/. _site/
-          cp -R packages _site/packages
-
-      - name: Resolve shared-core paths for the Pages artifact
-        run: |
-          find _site/assets/js/modules -name '*.js' -exec sed -i 's#../../../../packages/core/#../../../packages/core/#g' {} +
-          sed -i 's#\.\./packages/#./packages/#g' _site/sw.js
+      - name: Assemble Pages-compatible artifact
+        run: npm run build:site
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5

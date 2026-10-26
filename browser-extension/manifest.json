@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "PayloadForge",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Offline API payload tools in your browser.",
   "action": {
     "default_title": "PayloadForge",

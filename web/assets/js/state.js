@@ -13,6 +13,9 @@ class Store {
     editorFontSize: 13,
     historyEnabled: false,
     activeTool: "schema",
+    favoriteTools: [],
+    recentTools: [],
+    workflowGuideCollapsed: false,
     input: "",
     output: "",
   };
@@ -50,6 +53,9 @@ class Store {
       editorFontSize,
       historyEnabled,
       activeTool,
+      favoriteTools,
+      recentTools,
+      workflowGuideCollapsed,
     } = this.#state;
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       theme,
@@ -61,6 +67,9 @@ class Store {
       editorFontSize,
       historyEnabled,
       activeTool,
+      favoriteTools,
+      recentTools,
+      workflowGuideCollapsed,
     }));
   }
 }
