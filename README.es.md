@@ -140,7 +140,7 @@ Este comando comprueba archivos clave, sincroniza y valida las copias core de la
 
 La PWA publicada está disponible en [https://carlosarman.github.io/payload-forge/](https://carlosarman.github.io/payload-forge/).
 
-El workflow [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) valida el proyecto y publica la aplicación web después de cada push a `main`. Copia `web/` y `packages/` al artefacto de Pages y después resuelve los imports del core compartido de forma relativa a ese artefacto; así, el despliegue bajo la ruta `/payload-forge/` funciona sin modificar los imports usados durante el desarrollo local. Configura **Pages → Build and deployment → Source** como **GitHub Actions** en los ajustes del repositorio. También puede ejecutarse manualmente desde la pestaña **Actions**.
+El workflow [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) valida el proyecto y publica la aplicación web después de cada push a `main`. Copia `web/` y `packages/` al artefacto de Pages y después resuelve los imports del core compartido y las rutas de precache del Service Worker de forma relativa a ese artefacto; así, el despliegue bajo la ruta `/payload-forge/` funciona sin modificar las rutas usadas durante el desarrollo local. Configura **Pages → Build and deployment → Source** como **GitHub Actions** en los ajustes del repositorio. También puede ejecutarse manualmente desde la pestaña **Actions**.
 
 ---
 

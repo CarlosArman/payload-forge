@@ -18,7 +18,7 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 
 ### Modificado
 
-- Corregidos los imports del core compartido en el artefacto de GitHub Pages para que la PWA resuelva los módulos correctamente bajo la ruta de despliegue `/payload-forge/`, sin cambiar los imports del desarrollo local.
+- Corregidos los imports del core compartido y las rutas de precache del Service Worker en el artefacto de GitHub Pages para que la PWA resuelva los módulos correctamente bajo la ruta de despliegue `/payload-forge/`, sin cambiar las rutas del desarrollo local.
 - Resultados enriquecidos del Validador JSON Schema con controles para copiar rutas.
 - Rotada la caché offline de la PWA a `payloadforge-v36`.
 

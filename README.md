@@ -140,7 +140,7 @@ This checks key application files, synchronizes and validates extension core cop
 
 The live PWA is published at [https://carlosarman.github.io/payload-forge/](https://carlosarman.github.io/payload-forge/).
 
-The [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) workflow validates the project and publishes the web application after pushes to `main`. It copies `web/` and `packages/` into the Pages artifact, then resolves shared-core module imports relative to that artifact so deployment under the `/payload-forge/` path works without changing local development imports. Configure **Pages → Build and deployment → Source** as **GitHub Actions** in the repository settings. The workflow can also be run manually from the **Actions** tab.
+The [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) workflow validates the project and publishes the web application after pushes to `main`. It copies `web/` and `packages/` into the Pages artifact, then resolves shared-core module imports and Service Worker precache paths relative to that artifact so deployment under the `/payload-forge/` path works without changing local development paths. Configure **Pages → Build and deployment → Source** as **GitHub Actions** in the repository settings. The workflow can also be run manually from the **Actions** tab.
 
 ---
 
