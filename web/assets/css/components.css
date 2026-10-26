@@ -648,18 +648,40 @@ kbd {
   font-family: var(--font-mono);
 }
 .preference-number input {
-  width: 42px;
+  width: 58px;
+  min-height: 34px;
+  padding: 0 var(--space-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 700;
   text-align: center;
+}
+.preference-number input:focus-visible {
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 14%, transparent);
 }
 .preference-number small,
 .preference-toggle small {
   color: var(--text-subtle);
   font-size: 10px;
 }
+.preference-toggle {
+  justify-content: flex-start !important;
+  gap: var(--space-3) !important;
+}
+.preference-toggle > input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+}
 .preference-toggle > span {
   display: grid;
   gap: 3px;
-  padding-right: var(--space-3);
+  padding-right: 0;
 }
 .preference-toggle strong { color: var(--text); font-size: var(--text-xs); }
 .preferences-privacy .option-control { min-height: 58px; }

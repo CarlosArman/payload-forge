@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- Refined Preferences controls with a larger, more legible editor-font input and left-aligned line-wrap and local-history checkboxes.
 - Redesigned the Preferences dialog with grouped appearance, editor, and privacy sections; responsive controls; a clearer activity summary; and improved focus and visual hierarchy.
 - Improved native select controls with themed surfaces, custom chevrons, hover and focus-visible states, and selected-option colors for both tool options and the language picker.
 - Fixed shared-core imports and Service Worker precache paths in the GitHub Pages artifact so the PWA resolves modules correctly under the `/payload-forge/` deployment path while local development paths remain unchanged.

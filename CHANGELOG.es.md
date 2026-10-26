@@ -18,6 +18,7 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 
 ### Modificado
 
+- Refinados los controles de Preferencias con un campo de fuente del editor más grande y legible, y checkboxes de ajuste de líneas e historial local alineados a la izquierda.
 - Rediseñado el diálogo de Preferencias con secciones de apariencia, editor y privacidad; controles adaptables; resumen de actividad más claro; y mejor jerarquía visual y de foco.
 - Mejorados los controles select nativos con superficies adaptadas al tema, cheurones personalizados, estados hover y focus-visible, y colores para las opciones seleccionadas en herramientas y selector de idioma.
 - Corregidos los imports del core compartido y las rutas de precache del Service Worker en el artefacto de GitHub Pages para que la PWA resuelva los módulos correctamente bajo la ruta de despliegue `/payload-forge/`, sin cambiar las rutas del desarrollo local.
