@@ -6,7 +6,26 @@ Todos los cambios relevantes de este proyecto se documentarán en este archivo.
 
 El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/), y este proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 
-## [Sin publicar]
+## [1.3.0] - 2026-10-26
+
+### Añadido
+
+- Espacio de trabajo premium para herramientas de desarrollo con navegación compacta de productividad, Favoritas y Recientes persistentes, onboarding contextual y Command Palette ampliada.
+- Utilidades enterprise de editor: números de línea y resaltado JSON sincronizados, búsqueda `Ctrl/Cmd + F`, navegación de coincidencias, Go to Line con `Ctrl/Cmd + G`, línea/columna del cursor en tiempo real y foco/selección automática ante diagnósticos con línea y columna.
+- Acciones local-first para reutilizar un resultado como siguiente entrada sin persistirlo, y presets locales explícitos por herramienta.
+- Flujos por herramienta para guardar, cargar, exportar/importar, eliminar y limpiar presets; la limpieza del conjunto activo requiere confirmación en dos pasos. Los presets se limitan a 20 por herramienta, 200 KB por preset y 1 MB por archivo importado; almacenan solo nombre, herramienta, entrada y hora local.
+- Traducciones completas español/inglés para onboarding y gestión de presets.
+- `docs/DESIGN-SYSTEM.md` y `CONTRIBUTING.md` con contratos de componentes, tokens, expectativas de accesibilidad, políticas de almacenamiento local y checks de contribución.
+- Cobertura core/smoke para familias de transformadores y flujos E2E Playwright para favoritas, recientes, onboarding, i18n, navegación de editor, encadenamiento local, presets y recuperación de errores.
+- Gates de calidad GitHub Actions con Lighthouse CI, axe-core WCAG 2 A/AA, flujos Playwright y artefactos de revisión visual desktop/móvil.
+- Tooling de comparación visual con baselines e instrucciones de inicialización para capturas aprobadas.
+
+### Modificado
+
+- Rediseñado el shell web con superficies por capas, comportamiento responsive, feedback compacto de navegación, jerarquía de acciones premium y mejores estados de foco/error del editor.
+- Unificado el empaquetado de Pages y el ensamblado para CI mediante `scripts/build-site.mjs`.
+- Refactorizada la navegación cliente, estado de búsqueda, dispatch de Command Palette y comparación visual para mejorar mantenibilidad y cumplimiento de análisis estático.
+- Actualizada la validación de calidad con build de sitio, smoke coverage, auditoría de accesibilidad browser, artefactos visuales y diffs contra baseline.
 
 ## [1.2.0] - 2026-10-26
 

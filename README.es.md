@@ -1,7 +1,7 @@
 # 🛠️ PayloadForge
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Versi%C3%B3n-1.2.0-blueviolet" alt="Versión 1.2.0" />
+  <img src="https://img.shields.io/badge/Versi%C3%B3n-1.3.0-blueviolet" alt="Versión 1.3.0" />
   <img src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white" alt="HTML5" />
   <img src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white" alt="CSS3" />
   <img src="https://img.shields.io/badge/JavaScript-ES2023-F7DF1E?logo=javascript&logoColor=black" alt="JavaScript ES2023" />
@@ -103,6 +103,10 @@ La solución combina utilidades locales de parseo y transformación, módulos co
 - Importación y drag & drop para archivos `.json`, `.yaml`, `.yml`, `.xml` y `.txt`, con límite de 1 MB.
 - Borradores aislados por herramienta durante la sesión.
 - Redimensionamiento de editores en escritorio y pestañas Entrada/Resultado en móvil.
+- Navegación de productividad con Favoritas y Recientes persistentes, onboarding contextual y Paleta de comandos ampliada.
+- Utilidades enterprise del editor: búsqueda con `Ctrl/Cmd + F`, navegación entre coincidencias, Go to Line con `Ctrl/Cmd + G`, línea/columna del cursor y selección automática de diagnósticos por línea/columna.
+- Flujo local encadenado: reutiliza el resultado actual como siguiente entrada sin persistirlo.
+- Presets locales explícitos por herramienta: guardar con `Ctrl/Cmd + S`, cargar, exportar/importar, eliminar y limpiar el conjunto activo con confirmación de dos pasos; nunca se almacenan resultados, con límite de 20 presets, 200 KB por preset y 1 MB por archivo de importación. Consulta el [formato portable de presets](./docs/PRESET-FORMAT.md).
 - Paleta de comandos, ejemplos locales, copiado de resultados, descargas y enlaces para compartir.
 - Modal premium de Preferencias con tema oscuro, claro o del sistema; densidad; tamaño de fuente; ajuste de líneas; números de línea; resaltado de sintaxis; autocompletado; switches accesibles; y navegación por teclado con focus trap.
 - Historial local opcional con número de operaciones, uso de almacenamiento, última actualización y confirmación visual antes de limpiar; guarda únicamente identificador de herramienta, estado y hora.
@@ -136,6 +140,14 @@ npm run ci
 
 Este comando comprueba archivos clave, sincroniza y valida las copias core de las extensiones y ejecuta la suite `node:test`.
 
+Para construir el mismo artefacto que consume GitHub Pages:
+
+```bash
+npm run build:site
+```
+
+En CI, GitHub Actions también ejecuta Lighthouse, axe-core para WCAG 2 A/AA, flujos E2E Playwright, capturas desktop/móvil y comparación opcional contra baselines visuales. Consulta [`CONTRIBUTING.md`](./CONTRIBUTING.md) y [`docs/DESIGN-SYSTEM.md`](./docs/DESIGN-SYSTEM.md) para el proceso de contribución, accesibilidad y aprobación de baselines.
+
 ### Publicación en GitHub Pages
 
 La PWA publicada está disponible en [https://carlosarman.github.io/payload-forge/](https://carlosarman.github.io/payload-forge/).
@@ -148,8 +160,11 @@ El workflow [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) valida el
 
 | Atajo | Acción |
 |---|---|
-| `Ctrl/Cmd + K` | Abre el selector rápido de herramientas |
-| `Ctrl + Enter` | Ejecuta la herramienta activa |
+| `Ctrl/Cmd + K` | Abre la Command Palette de herramientas y acciones |
+| `Ctrl/Cmd + Enter` | Ejecuta la herramienta activa |
+| `Ctrl/Cmd + F` | Busca en Entrada o Resultado |
+| `Ctrl/Cmd + G` | Salta a una línea del panel seleccionado |
+| `Ctrl/Cmd + S` | Abre el diálogo para guardar un preset local |
 | `Tab` | Inserta dos espacios en el editor de entrada |
 | `←` / `→` sobre el divisor de escritorio | Redimensiona los editores |
 | Deslizar desde el borde izquierdo en móvil | Abre el menú de navegación |

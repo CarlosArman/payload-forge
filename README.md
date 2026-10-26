@@ -1,7 +1,7 @@
 # 🛠️ PayloadForge
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.2.0-blueviolet" alt="Version 1.2.0" />
+  <img src="https://img.shields.io/badge/Version-1.3.0-blueviolet" alt="Version 1.3.0" />
   <img src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white" alt="HTML5" />
   <img src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white" alt="CSS3" />
   <img src="https://img.shields.io/badge/JavaScript-ES2023-F7DF1E?logo=javascript&logoColor=black" alt="JavaScript ES2023" />
@@ -103,6 +103,10 @@ The solution combines local parsing and transformation utilities, reusable core 
 - File import and drag-and-drop support for `.json`, `.yaml`, `.yml`, `.xml`, and `.txt` files, with a 1 MB limit.
 - Session-only drafts isolated by tool.
 - Desktop editor resizing plus mobile Input/Output tabs.
+- Productivity navigation with persistent Favorites and Recent tools, contextual onboarding, and an expanded Command Palette.
+- Enterprise editor utilities: `Ctrl/Cmd + F` search, match navigation, `Ctrl/Cmd + G` Go to Line, real-time cursor line/column reporting, and automatic selection of line/column diagnostics.
+- Local chaining: reuse the current result as the next input without persisting it.
+- Explicit local presets per tool: save with `Ctrl/Cmd + S`, load, export/import, delete, and clear the active set with two-step confirmation. Results are never stored; limits are 20 presets, 200 KB per preset, and 1 MB per imported file. See the [portable preset format](./docs/PRESET-FORMAT.md).
 - Command palette, local examples, result copying, downloads, and share links.
 - Premium Preferences modal with dark, light, and system themes; density; font size; wrapping; line numbers; syntax highlighting; autocomplete; accessible switches; and focus-trapped keyboard navigation.
 - Optional local activity history with operation count, local storage usage, last update, and visual confirmation before clearing; it stores only tool ID, completion status, and timestamp.
@@ -136,6 +140,14 @@ npm run ci
 
 This checks key application files, synchronizes and validates extension core copies, and runs the `node:test` suite.
 
+To build the same artifact consumed by GitHub Pages:
+
+```bash
+npm run build:site
+```
+
+In CI, GitHub Actions also runs Lighthouse, axe-core WCAG 2 A/AA checks, Playwright E2E product flows, desktop/mobile captures, and optional visual-baseline comparison. See [`CONTRIBUTING.md`](./CONTRIBUTING.md) and [`docs/DESIGN-SYSTEM.md`](./docs/DESIGN-SYSTEM.md) for contribution, accessibility, and baseline-approval workflows.
+
 ### GitHub Pages deployment
 
 The live PWA is published at [https://carlosarman.github.io/payload-forge/](https://carlosarman.github.io/payload-forge/).
@@ -148,8 +160,11 @@ The [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) workflow validate
 
 | Shortcut | Action |
 |---|---|
-| `Ctrl/Cmd + K` | Open the quick tool picker |
-| `Ctrl + Enter` | Run the active tool |
+| `Ctrl/Cmd + K` | Open the Command Palette for tools and actions |
+| `Ctrl/Cmd + Enter` | Run the active tool |
+| `Ctrl/Cmd + F` | Search Input or Output |
+| `Ctrl/Cmd + G` | Go to a line in the selected panel |
+| `Ctrl/Cmd + S` | Open the dialog to save a local preset |
 | `Tab` | Insert two spaces in the input editor |
 | `←` / `→` on the desktop divider | Resize the editors |
 | Swipe from left edge on mobile | Open the navigation menu |

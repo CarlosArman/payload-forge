@@ -6,7 +6,26 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.3.0] - 2026-10-26
+
+### Added
+
+- Premium developer-tool workspace with compact productivity navigation, persistent Favorites and Recent tools, contextual onboarding, and an expanded Command Palette.
+- Enterprise editor utilities: synchronized line numbers and JSON highlighting, `Ctrl/Cmd + F` search, next/previous match navigation, `Ctrl/Cmd + G` Go to Line, real-time cursor line/column reporting, and automatic focus/selection for syntax errors with line and column diagnostics.
+- Local-first workflow actions: use a generated result as the next input without persisting it, plus explicit local presets scoped to the active tool.
+- Per-tool preset save, load, export/import, removal, and clear-active-set workflows, with two-step confirmation before clearing the active set. Presets are limited to 20 per tool, 200 KB per preset, and 1 MB per imported file; they store only name, tool, input, and local timestamp.
+- Complete English/Spanish translations for onboarding and preset-management flows.
+- `docs/DESIGN-SYSTEM.md` and `CONTRIBUTING.md` with component contracts, design tokens, accessibility expectations, local storage policies, and contribution checks.
+- Core/smoke coverage for all core transform families and Playwright E2E product-flow coverage for favorites, recents, onboarding, i18n, editor navigation, local chaining, presets, and error recovery.
+- GitHub Actions quality gates for Lighthouse CI, axe-core WCAG 2 A/AA checks, Playwright product flows, and desktop/mobile visual review artifacts.
+- Visual-baseline comparison tooling and initialization guidance for approved desktop and mobile screenshots.
+
+### Changed
+
+- Redesigned the web shell with layered surfaces, responsive behavior, compact navigation feedback, premium action hierarchy, and improved editor focus/error states.
+- Unified Pages packaging and CI site assembly through `scripts/build-site.mjs`.
+- Refactored client navigation, search status, command-action dispatch, and visual-baseline comparison to improve maintainability and static-analysis compliance.
+- Updated quality validation to include the site build, smoke coverage, browser accessibility auditing, visual artifacts, and baseline diffs.
 
 ## [1.2.0] - 2026-10-26
 
