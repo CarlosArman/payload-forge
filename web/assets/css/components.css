@@ -669,9 +669,9 @@ kbd {
   color: var(--text-subtle);
   font-size: 10px;
 }
-.preference-toggle {
-  justify-content: flex-start !important;
-  gap: var(--space-3) !important;
+.preferences-controls .option-control.preference-toggle {
+  justify-content: flex-start;
+  gap: var(--space-3);
 }
 .preference-toggle > input[type="checkbox"] {
   width: 18px;
