@@ -58,7 +58,8 @@ Este repositorio distribuye PayloadForge en tres superficies:
 
 La solución combina utilidades locales de parseo y transformación, módulos core reutilizables, una interfaz SPA adaptable, editores sincronizados y validación mediante CI.
 
-🔗 **Aplicación web:** [`web/`](./web/)  
+🔗 **Aplicación web publicada:** [carlosarman.github.io/payload-forge](https://carlosarman.github.io/payload-forge/)  
+🔗 **Código fuente de la aplicación web:** [`web/`](./web/)  
 🔗 **Extensión de navegador:** [`browser-extension/`](./browser-extension/)  
 🔗 **Extensión de VS Code:** [`vscode-extension/`](./vscode-extension/)  
 🔗 **Núcleo compartido:** [`packages/core/`](./packages/core/)  
@@ -137,7 +138,9 @@ Este comando comprueba archivos clave, sincroniza y valida las copias core de la
 
 ### Publicación en GitHub Pages
 
-El workflow [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) valida el proyecto y publica la aplicación web después de cada push a `main`. Configura **Pages → Build and deployment → Source** como **GitHub Actions** en los ajustes del repositorio. También puede ejecutarse manualmente desde la pestaña **Actions**.
+La PWA publicada está disponible en [https://carlosarman.github.io/payload-forge/](https://carlosarman.github.io/payload-forge/).
+
+El workflow [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) valida el proyecto y publica la aplicación web después de cada push a `main`. Copia `web/` y `packages/` al artefacto de Pages y después resuelve los imports del core compartido de forma relativa a ese artefacto; así, el despliegue bajo la ruta `/payload-forge/` funciona sin modificar los imports usados durante el desarrollo local. Configura **Pages → Build and deployment → Source** como **GitHub Actions** en los ajustes del repositorio. También puede ejecutarse manualmente desde la pestaña **Actions**.
 
 ---
 

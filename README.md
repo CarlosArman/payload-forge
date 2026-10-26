@@ -58,7 +58,8 @@ This repository provides PayloadForge through three distribution surfaces:
 
 The solution combines local parsing and transformation utilities, reusable core modules, a responsive single-page interface, synchronized editors, and CI validation.
 
-🔗 **Web application:** [`web/`](./web/)  
+🔗 **Live web application:** [carlosarman.github.io/payload-forge](https://carlosarman.github.io/payload-forge/)  
+🔗 **Web application source:** [`web/`](./web/)  
 🔗 **Browser extension:** [`browser-extension/`](./browser-extension/)  
 🔗 **VS Code extension:** [`vscode-extension/`](./vscode-extension/)  
 🔗 **Shared core:** [`packages/core/`](./packages/core/)  
@@ -137,7 +138,9 @@ This checks key application files, synchronizes and validates extension core cop
 
 ### GitHub Pages deployment
 
-The [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) workflow validates the project and publishes the web application after pushes to `main`. Configure **Pages → Build and deployment → Source** as **GitHub Actions** in the repository settings. The workflow can also be run manually from the **Actions** tab.
+The live PWA is published at [https://carlosarman.github.io/payload-forge/](https://carlosarman.github.io/payload-forge/).
+
+The [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) workflow validates the project and publishes the web application after pushes to `main`. It copies `web/` and `packages/` into the Pages artifact, then resolves shared-core module imports relative to that artifact so deployment under the `/payload-forge/` path works without changing local development imports. Configure **Pages → Build and deployment → Source** as **GitHub Actions** in the repository settings. The workflow can also be run manually from the **Actions** tab.
 
 ---
 

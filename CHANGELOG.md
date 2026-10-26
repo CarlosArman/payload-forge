@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- Fixed GitHub Pages artifact imports for the shared core so the PWA resolves modules correctly under the `/payload-forge/` deployment path while local development imports remain unchanged.
 - Enriched JSON Schema Validator results with path-level copy controls.
 - Rotated the PWA offline cache to `payloadforge-v36`.
 
