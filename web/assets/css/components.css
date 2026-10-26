@@ -177,9 +177,36 @@ kbd {
   font-family: var(--font-ui);
   font-size: var(--text-xs);
 }
+.option-control select {
+  min-height: 26px;
+  padding: 0 25px 0 var(--space-2);
+  border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+  border-radius: calc(var(--radius-sm) - 1px);
+  appearance: none;
+  background-color: color-mix(in srgb, var(--surface-raised) 82%, transparent);
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-subtle) 50%), linear-gradient(135deg, var(--text-subtle) 50%, transparent 50%);
+  background-position: calc(100% - 11px) 11px, calc(100% - 7px) 11px;
+  background-repeat: no-repeat;
+  background-size: 4px 4px, 4px 4px;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color var(--transition), background-color var(--transition), box-shadow var(--transition);
+}
+.option-control select:hover:not(:disabled) {
+  border-color: var(--border-strong);
+  background-color: var(--surface-raised);
+}
+.option-control select:focus-visible {
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 14%, transparent);
+}
+.option-control select option {
+  background: var(--surface);
+  color: var(--text);
+}
+.option-control select option:checked { background: var(--primary); color: #fff; }
 .option-control input[type="number"] { width: 52px; }
 .option-control input[type="checkbox"] { accent-color: var(--primary); }
-.option-control select option { background: var(--surface); color: var(--text); }
 .option-control.is-muted {
   opacity: 0.5;
   filter: saturate(0.55);
@@ -625,15 +652,23 @@ kbd {
 }
 .language-control select {
   height: 100%;
-  padding: 0 var(--space-2);
+  padding: 0 25px 0 var(--space-2);
   border: 0;
   outline: 0;
-  background: transparent;
+  appearance: none;
+  background-color: transparent;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-subtle) 50%), linear-gradient(135deg, var(--text-subtle) 50%, transparent 50%);
+  background-position: calc(100% - 11px) 50%, calc(100% - 7px) 50%;
+  background-repeat: no-repeat;
+  background-size: 4px 4px, 4px 4px;
   color: var(--text-muted);
+  cursor: pointer;
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 600;
 }
+.language-control select option { background: var(--surface); color: var(--text); }
+.language-control select option:checked { background: var(--primary); color: #fff; }
 .language-control:focus-within {
   border-color: var(--focus);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 13%, transparent);
