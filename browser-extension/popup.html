@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PayloadForge</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    body { width: 340px; margin: 0; padding: 14px; background: #16191d; color: #f1f2ef; }
+    h1 { margin: 0; font-size: 18px; }
+    p { margin: 4px 0 12px; color: #aab2bd; font-size: 12px; }
+    textarea {
+      width: 100%; min-height: 96px; box-sizing: border-box; padding: 9px;
+      border: 1px solid #3c474f; border-radius: 6px; background: #1e2328;
+      color: #f1f2ef; font: 12px/1.45 ui-monospace, Consolas, monospace; resize: vertical;
+    }
+    .actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; }
+    button {
+      min-height: 34px; border: 1px solid #3c474f; border-radius: 6px;
+      background: #272e34; color: #f1f2ef; font-size: 11px; cursor: pointer;
+    }
+    button:hover { border-color: #cf6846; background: #323b42; }
+    #copy { width: 100%; margin-top: 8px; }
+    #status { display: block; min-height: 18px; margin-top: 8px; color: #8ed1c0; font-size: 11px; }
+  </style>
+</head>
+<body>
+  <h1>PayloadForge</h1>
+  <p>Transform selected or pasted text locally.</p>
+  <textarea id="input" aria-label="Input text" placeholder="Paste text or use the context menu selection…"></textarea>
+  <div class="actions">
+    <button type="button" data-action="format">Format JSON</button>
+    <button type="button" data-action="base64">Base64</button>
+    <button type="button" data-action="redact">Redact secrets</button>
+  </div>
+  <textarea id="output" aria-label="Result" readonly placeholder="Result appears here…"></textarea>
+  <button type="button" id="copy">Copy result</button>
+  <output id="status" aria-live="polite"></output>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

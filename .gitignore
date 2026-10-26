@@ -1,0 +1,11 @@
+# graphify
+.graphify/
+
+# Compiled extension packages
+extensions/*.vsix
+extensions/*.zip
+extensions/*.xpi
+
+# Generated extension copies of the shared ESM core
+browser-extension/core/
+vscode-extension/core/

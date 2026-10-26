@@ -1,0 +1,14 @@
+{
+  "name": "payloadforge",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Offline developer toolkit for API payloads.",
+  "type": "module",
+  "scripts": {
+    "sync:core": "node scripts/sync-core.mjs",
+    "test": "node --test web/tests/core.test.js",
+    "check": "node --check web/assets/js/app.js && node --check web/sw.js && node --input-type=module --eval \"import('./packages/core/index.js')\"",
+    "check:extensions": "npm run sync:core && node --check browser-extension/popup.js && node --check browser-extension/background.js && node --check vscode-extension/src/extension.js && node --input-type=module --eval \"import('./browser-extension/core/index.js'); import('./vscode-extension/core/index.js')\"",
+    "ci": "npm run check && npm run check:extensions && npm test"
+  }
+}

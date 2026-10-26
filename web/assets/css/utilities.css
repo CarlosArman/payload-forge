@@ -1,0 +1,87 @@
+/* ─── Screen reader only ──────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ─── Skip link ───────────────────────────────────────────────── */
+.skip-link {
+  position: fixed;
+  z-index: var(--z-skip-link);
+  top: var(--space-2);
+  left: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  transform: translateY(-200%);
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: #fff;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform var(--transition);
+}
+.skip-link:focus { transform: translateY(0); }
+
+/* ─── Focus visible ───────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.editor-card .code-editor:focus-visible {
+  box-shadow: inset 3px 0 0 var(--primary);
+  outline: none;
+}
+
+/* ─── Visibility ──────────────────────────────────────────────── */
+.is-hidden { display: none !important; }
+
+/* ─── Loading shimmer ─────────────────────────────────────────── */
+.is-loading {
+  position: relative;
+  overflow: hidden;
+  pointer-events: none;
+}
+.is-loading::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgb(255 255 255 / 0.07) 45%,
+    transparent 70%
+  );
+  content: "";
+  transform: translateX(-100%);
+  animation: shimmer 1.3s ease infinite;
+}
+
+@keyframes shimmer {
+  to { transform: translateX(100%); }
+}
+
+/* ─── Semantic color utilities ────────────────────────────────── */
+.error-text { color: var(--danger); }
+.success-text { color: var(--success); }
+.warning-text { color: var(--warning); }
+.muted-text { color: var(--text-subtle); }
+
+/* ─── Reduced motion ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within { scroll-behavior: auto; }
+
+  :where(*, *::before, *::after) {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .sidebar { transition-duration: 0ms !important; }
+  .toast { animation: none; }
+}

@@ -1,0 +1,77 @@
+{
+  "name": "payloadforge-vscode",
+  "displayName": "PayloadForge",
+  "description": "Offline API payload tools for Visual Studio Code.",
+  "version": "1.1.0",
+  "publisher": "payloadforge",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other",
+    "Formatters"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "payloadforge.open",
+        "title": "PayloadForge: Open Toolkit"
+      },
+      {
+        "command": "payloadforge.formatJson",
+        "title": "PayloadForge: Format JSON Selection"
+      },
+      {
+        "command": "payloadforge.minifyJson",
+        "title": "PayloadForge: Minify JSON Selection"
+      },
+      {
+        "command": "payloadforge.encodeBase64",
+        "title": "PayloadForge: Encode Selection as Base64"
+      },
+      {
+        "command": "payloadforge.redactSecrets",
+        "title": "PayloadForge: Redact Secrets in Selection"
+      },
+      {
+        "command": "payloadforge.jsonToTypeScript",
+        "title": "PayloadForge: Generate TypeScript from JSON Selection"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "payloadforge.formatJson",
+          "group": "payloadforge@1",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "payloadforge.minifyJson",
+          "group": "payloadforge@2",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "payloadforge.redactSecrets",
+          "group": "payloadforge@3",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "payloadforge.jsonToTypeScript",
+          "group": "payloadforge@4",
+          "when": "editorHasSelection"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "sync:core": "node ../scripts/sync-core.mjs",
+    "check": "node --check src/extension.js",
+    "prepackage": "npm run sync:core",
+    "package": "npx @vscode/vsce package --out ../extensions/payloadforge-vscode.vsix"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.2.0"
+  }
+}

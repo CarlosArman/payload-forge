@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root {
+  color-scheme: dark;
+  /* PayloadForge: superficies de trabajo, no decoración de producto. */
+  --bg: #16191d;
+  --surface: #1e2328;
+  --surface-raised: #272e34;
+  --surface-hover: #323b42;
+  --border: #3c474f;
+  --border-strong: #62707a;
+  --primary: #cf6846;
+  --primary-hover: #e78966;
+
+  /* Roles semánticos para componentes y temas. */
+  --color-background-app: var(--bg);
+  --color-surface-workspace: var(--surface);
+  --color-surface-editor: #1a2025;
+  --color-text-primary: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-action-primary: var(--primary);
+  --color-border-default: var(--border);
+  --color-border-focus: var(--focus);
+  --primary-soft: rgb(207 104 70 / 0.14);
+  --success: #48ad91;
+  --success-soft: rgb(72 173 145 / 0.14);
+  --warning: #d9ad4d;
+  --warning-soft: rgb(217 173 77 / 0.15);
+  --danger: #de6965;
+  --danger-soft: rgb(222 105 101 / 0.14);
+  --text: #f1f2ef;
+  --text-muted: #c6cbc6;
+  --text-subtle: #929b96;
+  --focus: #8ed1c0;
+  --syntax-key: #91c6bd;
+  --syntax-string: #b7d889;
+  --syntax-number: #e5bd71;
+  --syntax-literal: #d7a5c9;
+  --editor-grid: rgb(237 240 237 / 0.03);
+  --selection: rgb(217 103 63 / 0.32);
+  --scrollbar-track: #1c2024;
+  --scrollbar-thumb: #556167;
+  --scrollbar-thumb-hover: #6b777d;
+  --scrollbar-thumb-active: var(--primary);
+  --shadow-sm: 0 2px 6px rgb(0 0 0 / 0.14);
+  --shadow: 0 12px 28px rgb(0 0 0 / 0.20);
+  --shadow-lg: 0 20px 48px rgb(0 0 0 / 0.24);
+  --radius-control: 7px;
+  --radius-sm: var(--radius-control);
+  --radius: 11px;
+  --radius-panel: 15px;
+  --radius-lg: var(--radius-panel);
+  --control-height: 40px;
+  --control-height-touch: 44px;
+  --header-height: 64px;
+  --sidebar-width: 252px;
+  --font-ui: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  --transition: 160ms ease;
+  --transition-fast: 100ms ease;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+
+  /* Typography scale */
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-base: 14px;
+  --text-md: 15px;
+  --text-lg: 18px;
+  --text-xl: 22px;
+  --text-2xl: clamp(25px, 2.2vw, 34px);
+
+  /* Icon sizing */
+  --icon-sm: 14px;
+  --icon-md: 16px;
+  --icon-lg: 20px;
+
+  /* Z-index scale */
+  --z-sidebar: 15;
+  --z-header: 20;
+  --z-overlay: 50;
+  --z-mobile-sidebar: 60;
+  --z-toast: 100;
+  --z-skip-link: 200;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #ebece7;
+  --surface: #f8f9f6;
+  --surface-raised: #e5e8e1;
+  --surface-hover: #d8ddd4;
+  --color-surface-editor: #f3f5ef;
+  --border: #b9c0b7;
+  --border-strong: #858e87;
+  --primary: #b74b2e;
+  --primary-hover: #963720;
+  --primary-soft: rgb(183 75 46 / 0.12);
+  --success: #26765f;
+  --success-soft: rgb(38 118 95 / 0.12);
+  --warning: #8a6814;
+  --warning-soft: rgb(138 104 20 / 0.13);
+  --danger: #b8403d;
+  --danger-soft: rgb(184 64 61 / 0.1);
+  --text: #1c2024;
+  --text-muted: #454f4b;
+  --text-subtle: #66716b;
+  --focus: #176d5a;
+  --syntax-key: #166b62;
+  --syntax-string: #4b7532;
+  --syntax-number: #8a6814;
+  --syntax-literal: #87567d;
+  --editor-grid: rgb(28 32 36 / 0.05);
+  --selection: rgb(183 75 46 / 0.24);
+  --scrollbar-track: #e1e3dc;
+  --scrollbar-thumb: #a0aaa1;
+  --scrollbar-thumb-hover: #858e87;
+  --scrollbar-thumb-active: var(--primary);
+  --shadow-sm: 0 2px 6px rgb(27 48 59 / 0.08);
+  --shadow: 0 12px 28px rgb(27 48 59 / 0.12);
+  --shadow-lg: 0 20px 45px rgb(27 48 59 / 0.14);
+}
+
+* {
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+html { background: var(--bg); }
+
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track {
+  border: 3px solid transparent;
+  background: var(--scrollbar-track);
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb {
+  min-height: 42px;
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: var(--scrollbar-thumb);
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover { background-color: var(--scrollbar-thumb-hover); }
+*::-webkit-scrollbar-thumb:active { background-color: var(--scrollbar-thumb-active); }
+*::-webkit-scrollbar-corner { background: var(--scrollbar-track); }
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.5;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+button:disabled { cursor: not-allowed; }
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+::selection { background: var(--primary); color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --transition: 0ms linear; }
+  .sidebar { transition-duration: 0ms; }
+}
