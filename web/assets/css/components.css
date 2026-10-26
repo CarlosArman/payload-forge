@@ -563,31 +563,142 @@ kbd {
 }
 .command-results { max-height: 315px; overflow: auto; padding: 0 var(--space-2) var(--space-2); }
 
+.preferences-dialog {
+  width: min(620px, calc(100vw - 32px));
+  overflow: hidden;
+}
+.preferences-dialog::backdrop { background: rgb(5 16 23 / 0.78); backdrop-filter: blur(3px); }
+.preferences-panel { background: linear-gradient(145deg, color-mix(in srgb, var(--surface-raised) 52%, var(--surface)), var(--surface)); }
+.preferences-heading {
+  align-items: flex-start;
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(115deg, color-mix(in srgb, var(--primary-soft) 80%, transparent), transparent 62%);
+}
+.preferences-heading > div { min-width: 0; }
+.preferences-eyebrow {
+  margin: 0 0 4px;
+  color: var(--primary);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.preferences-heading h2 { font-size: var(--text-lg); }
+.preferences-heading p:not(.preferences-eyebrow) {
+  max-width: 430px;
+  margin: var(--space-1) 0 0;
+  color: var(--text-subtle);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+.preferences-close {
+  border-color: var(--border);
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+}
 .preferences-controls {
   display: grid;
-  gap: var(--space-2);
-  padding: 0 var(--space-4) var(--space-3);
+  gap: var(--space-4);
+  max-height: min(52vh, 430px);
+  overflow: auto;
+  padding: var(--space-4);
 }
-.preferences-controls .option-control { justify-content: space-between; }
+.preferences-section {
+  display: grid;
+  gap: var(--space-2);
+}
+.preferences-section + .preferences-section {
+  padding-top: var(--space-4);
+  border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+}
+.preferences-section h3 {
+  margin: 0;
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.preferences-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+.preferences-controls .option-control {
+  min-width: 0;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+  background: color-mix(in srgb, var(--surface-raised) 58%, transparent);
+  color: var(--text-muted);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
+}
+.preferences-controls .option-control:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-raised);
+}
+.preferences-controls .option-control > span:first-child { min-width: 0; }
+.preference-number {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+}
+.preference-number input {
+  width: 42px;
+  text-align: center;
+}
+.preference-number small,
+.preference-toggle small {
+  color: var(--text-subtle);
+  font-size: 10px;
+}
+.preference-toggle > span {
+  display: grid;
+  gap: 3px;
+  padding-right: var(--space-3);
+}
+.preference-toggle strong { color: var(--text); font-size: var(--text-xs); }
+.preferences-privacy .option-control { min-height: 58px; }
 .preferences-history {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  padding: var(--space-3) var(--space-4) var(--space-4);
+  padding: var(--space-3) var(--space-4);
   border-top: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface-raised) 42%, transparent);
 }
 .preferences-history strong,
 .preferences-history span {
   display: block;
 }
-.preferences-history strong { font-size: var(--text-xs); }
+.preferences-history strong { color: var(--text); font-size: var(--text-xs); }
 .preferences-history span {
-  margin-top: 2px;
+  margin-top: 3px;
   color: var(--text-subtle);
   font-size: 10px;
 }
-.preferences-history .button { flex-shrink: 0; }
+.preferences-history .button {
+  flex-shrink: 0;
+  min-height: 32px;
+}
+
+@media (max-width: 520px) {
+  .preferences-dialog { width: min(100vw - 20px, 620px); }
+  .preferences-heading,
+  .preferences-controls { padding: var(--space-3); }
+  .preferences-grid { grid-template-columns: 1fr; }
+  .preferences-history {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: var(--space-3);
+  }
+  .preferences-history .button { width: 100%; }
+}
 .command-item {
   justify-content: flex-start;
   width: 100%;

@@ -223,21 +223,40 @@
 
   <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
 
-  <dialog id="preferences-dialog" class="command-dialog" aria-labelledby="preferences-title">
+  <dialog id="preferences-dialog" class="command-dialog preferences-dialog" aria-labelledby="preferences-title" aria-describedby="preferences-description">
     <div class="command-palette preferences-panel">
-      <div class="command-heading">
-        <h2 id="preferences-title">Preferencias</h2>
-        <button class="icon-button" id="preferences-close" type="button" aria-label="Cerrar preferencias">×</button>
+      <div class="command-heading preferences-heading">
+        <div>
+          <p class="preferences-eyebrow">ESPACIO DE TRABAJO</p>
+          <h2 id="preferences-title">Preferencias</h2>
+          <p id="preferences-description">Personaliza la apariencia y el comportamiento local de PayloadForge.</p>
+        </div>
+        <button class="icon-button preferences-close" id="preferences-close" type="button" aria-label="Cerrar preferencias">
+          <svg class="icon" aria-hidden="true" width="16" height="16"><use href="#icon-x"/></svg>
+        </button>
       </div>
       <div class="preferences-controls">
-        <label class="option-control">Tema <select id="preference-theme"><option value="dark">Oscuro</option><option value="light">Claro</option><option value="system">Sistema</option></select></label>
-        <label class="option-control">Densidad <select id="preference-density"><option value="comfortable">Cómoda</option><option value="compact">Compacta</option></select></label>
-        <label class="option-control">Fuente <input id="preference-font-size" type="number" min="11" max="20" value="13"> px</label>
-        <label class="option-control"><input id="preference-wrap" type="checkbox"> Ajustar líneas del editor</label>
-        <label class="option-control"><input id="preference-history" type="checkbox"> Activar historial local (opt-in)</label>
+        <section class="preferences-section" aria-labelledby="preferences-appearance">
+          <h3 id="preferences-appearance">Apariencia</h3>
+          <div class="preferences-grid">
+            <label class="option-control"><span>Tema</span><select id="preference-theme"><option value="dark">Oscuro</option><option value="light">Claro</option><option value="system">Sistema</option></select></label>
+            <label class="option-control"><span>Densidad</span><select id="preference-density"><option value="comfortable">Cómoda</option><option value="compact">Compacta</option></select></label>
+          </div>
+        </section>
+        <section class="preferences-section" aria-labelledby="preferences-editor">
+          <h3 id="preferences-editor">Editor</h3>
+          <div class="preferences-grid">
+            <label class="option-control"><span>Tamaño de fuente</span><span class="preference-number"><input id="preference-font-size" type="number" min="11" max="20" value="13" aria-label="Tamaño de fuente del editor"> <small>px</small></span></label>
+            <label class="option-control preference-toggle"><span>Ajustar líneas</span><input id="preference-wrap" type="checkbox" aria-label="Ajustar líneas del editor"></label>
+          </div>
+        </section>
+        <section class="preferences-section preferences-privacy" aria-labelledby="preferences-privacy">
+          <h3 id="preferences-privacy">Privacidad</h3>
+          <label class="option-control preference-toggle"><span><strong>Historial local</strong><small>Registra solo herramienta, estado y hora; nunca payloads ni resultados.</small></span><input id="preference-history" type="checkbox" aria-label="Activar historial local"></label>
+        </section>
       </div>
       <div class="preferences-history">
-        <div><strong>Historial local</strong><span id="history-status">Desactivado; no se guardan operaciones.</span></div>
+        <div><strong>Actividad guardada</strong><span id="history-status">Desactivado; no se guardan operaciones.</span></div>
         <button class="button button-ghost" id="history-clear" type="button">Limpiar historial</button>
       </div>
     </div>
