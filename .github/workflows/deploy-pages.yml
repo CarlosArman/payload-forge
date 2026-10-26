@@ -36,6 +36,10 @@ jobs:
           cp -R web/. _site/
           cp -R packages _site/packages
 
+      - name: Resolve shared-core imports for the Pages artifact
+        run: |
+          find _site/assets/js/modules -name '*.js' -exec sed -i 's#../../../../packages/core/#../../../packages/core/#g' {} +
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
