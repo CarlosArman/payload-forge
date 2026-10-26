@@ -1,7 +1,7 @@
 # 🛠️ PayloadForge
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Versi%C3%B3n-1.1.0-blueviolet" alt="Versión 1.1.0" />
+  <img src="https://img.shields.io/badge/Versi%C3%B3n-1.2.0-blueviolet" alt="Versión 1.2.0" />
   <img src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white" alt="HTML5" />
   <img src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white" alt="CSS3" />
   <img src="https://img.shields.io/badge/JavaScript-ES2023-F7DF1E?logo=javascript&logoColor=black" alt="JavaScript ES2023" />
@@ -104,8 +104,8 @@ La solución combina utilidades locales de parseo y transformación, módulos co
 - Borradores aislados por herramienta durante la sesión.
 - Redimensionamiento de editores en escritorio y pestañas Entrada/Resultado en móvil.
 - Paleta de comandos, ejemplos locales, copiado de resultados, descargas y enlaces para compartir.
-- Tema oscuro, claro o del sistema; preferencias de densidad, ajuste de línea y tamaño de fuente.
-- Historial local opcional que guarda únicamente identificador de herramienta, estado y hora.
+- Modal premium de Preferencias con tema oscuro, claro o del sistema; densidad; tamaño de fuente; ajuste de líneas; números de línea; resaltado de sintaxis; autocompletado; switches accesibles; y navegación por teclado con focus trap.
+- Historial local opcional con número de operaciones, uso de almacenamiento, última actualización y confirmación visual antes de limpiar; guarda únicamente identificador de herramienta, estado y hora.
 
 ---
 
@@ -173,7 +173,9 @@ El workflow [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) valida el
 
 ### Extensión de navegador
 
-La extensión Manifest V3 ofrece formato JSON local, codificación Base64, redacción de secretos, copiado y una acción en el menú contextual de selección.
+La extensión Manifest V3 ofrece formato JSON local, codificación Base64, redacción de secretos, copiado, una acción en el menú contextual de selección y una vista dedicada de Preferencias en su popup.
+
+La vista de Preferencias del popup persiste tema, densidad, tamaño de fuente, ajuste de líneas, preferencia de resaltado sintáctico e historial de actividad opcional y solo de metadatos mediante `chrome.storage.local`. También muestra métricas del historial local y una confirmación explícita antes de limpiarlo.
 
 1. Ejecuta `npm run sync:core`.
 2. Abre el administrador de extensiones (`chrome://extensions` o `edge://extensions`).
@@ -186,6 +188,8 @@ Para generar un archivo distribuible, comprime el **contenido** de `browser-exte
 ### Extensión de VS Code
 
 La extensión de VS Code incluye comandos sobre selecciones para formatear/minificar JSON, codificar Base64, redactar secretos y generar JSON → TypeScript.
+
+Ejecuta **PayloadForge: Open Preferences** desde la Paleta de comandos para abrir su webview nativo. Persiste tema, densidad, tamaño de fuente, ajuste de líneas, resaltado sintáctico e historial local solo de metadatos mediante `globalState` de VS Code; la tarjeta de historial muestra número de operaciones, espacio usado y última actualización.
 
 ```bash
 cd vscode-extension

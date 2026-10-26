@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-26
+
 ### Added
 
 - Advanced local JSON Schema validation with `$ref`/`$defs`, combinators, formats, unique arrays, dependencies, conditionals, and additional-property rules.
@@ -15,11 +17,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - OpenAPI endpoint details with resolved local references, parameters, request bodies, responses, filtering, and Fetch/cURL snippet copying.
 - Preferences for system theme, density, editor font size, and line wrapping.
 - Opt-in, metadata-only local activity history that never stores payloads or generated results.
+- Premium Preferences experiences across all three distribution surfaces: the responsive web modal, the browser-extension popup, and a VS Code Preferences webview opened with `PayloadForge: Open Preferences`.
+- Persistent extension preferences for theme, density, editor font size, line wrapping, syntax highlighting, and opt-in local history, backed by `chrome.storage.local` in the browser extension and VS Code `globalState`.
 
 ### Changed
 
 - Refined Preferences controls with a larger, more legible editor-font input and left-aligned line-wrap and local-history checkboxes.
 - Redesigned the Preferences dialog with grouped appearance, editor, and privacy sections; responsive controls; a clearer activity summary; and improved focus and visual hierarchy.
+- Aligned Preferences interaction, accessibility, local-history privacy, confirmation feedback, and reduced-motion support across the web app and both extensions.
 - Improved native select controls with themed surfaces, custom chevrons, hover and focus-visible states, and selected-option colors for both tool options and the language picker.
 - Fixed shared-core imports and Service Worker precache paths in the GitHub Pages artifact so the PWA resolves modules correctly under the `/payload-forge/` deployment path while local development paths remain unchanged.
 - Enriched JSON Schema Validator results with path-level copy controls.

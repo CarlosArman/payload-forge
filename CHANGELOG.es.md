@@ -8,6 +8,8 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 
 ## [Sin publicar]
 
+## [1.2.0] - 2026-10-26
+
 ### Añadido
 
 - Validación JSON Schema local avanzada con `$ref`/`$defs`, combinadores, formatos, arrays únicos, dependencias, condicionales y reglas de propiedades adicionales.
@@ -15,11 +17,14 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 - Detalles de endpoint OpenAPI con referencias locales resueltas, parámetros, request bodies, respuestas, filtros y copiado de snippets Fetch/cURL.
 - Preferencias de tema del sistema, densidad, tamaño de fuente del editor y ajuste de línea.
 - Historial local de actividad opcional y solo de metadatos, que nunca almacena payloads ni resultados generados.
+- Experiencias premium de Preferencias en las tres superficies de distribución: modal web adaptable, popup de la extensión de navegador y webview de Preferencias de VS Code mediante `PayloadForge: Open Preferences`.
+- Preferencias persistentes de extensiones para tema, densidad, tamaño de fuente, ajuste de líneas, resaltado de sintaxis e historial local opcional, respaldadas por `chrome.storage.local` en el navegador y `globalState` en VS Code.
 
 ### Modificado
 
 - Refinados los controles de Preferencias con un campo de fuente del editor más grande y legible, y checkboxes de ajuste de líneas e historial local alineados a la izquierda.
 - Rediseñado el diálogo de Preferencias con secciones de apariencia, editor y privacidad; controles adaptables; resumen de actividad más claro; y mejor jerarquía visual y de foco.
+- Alineadas la interacción de Preferencias, accesibilidad, privacidad del historial local, feedback de confirmación y soporte de movimiento reducido entre la web y ambas extensiones.
 - Mejorados los controles select nativos con superficies adaptadas al tema, cheurones personalizados, estados hover y focus-visible, y colores para las opciones seleccionadas en herramientas y selector de idioma.
 - Corregidos los imports del core compartido y las rutas de precache del Service Worker en el artefacto de GitHub Pages para que la PWA resuelva los módulos correctamente bajo la ruta de despliegue `/payload-forge/`, sin cambiar las rutas del desarrollo local.
 - Resultados enriquecidos del Validador JSON Schema con controles para copiar rutas.

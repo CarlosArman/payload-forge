@@ -225,39 +225,122 @@
 
   <dialog id="preferences-dialog" class="command-dialog preferences-dialog" aria-labelledby="preferences-title" aria-describedby="preferences-description">
     <div class="command-palette preferences-panel">
-      <div class="command-heading preferences-heading">
-        <div>
-          <p class="preferences-eyebrow">ESPACIO DE TRABAJO</p>
-          <h2 id="preferences-title">Preferencias</h2>
-          <p id="preferences-description">Personaliza la apariencia y el comportamiento local de PayloadForge.</p>
+      <header class="command-heading preferences-heading">
+        <div class="preferences-title-group">
+          <span class="preferences-title-icon" aria-hidden="true">⚙</span>
+          <div>
+            <p class="preferences-eyebrow">ESPACIO DE TRABAJO</p>
+            <h2 id="preferences-title">Preferencias</h2>
+            <p id="preferences-description">Personaliza la experiencia de uso de PayloadForge.</p>
+          </div>
         </div>
-        <button class="icon-button preferences-close" id="preferences-close" type="button" aria-label="Cerrar preferencias">
-          <svg class="icon" aria-hidden="true" width="16" height="16"><use href="#icon-x"/></svg>
+        <button class="icon-button preferences-close" id="preferences-close" type="button" aria-label="Cerrar preferencias" title="Cerrar preferencias">
+          <svg class="icon" aria-hidden="true" width="20" height="20"><use href="#icon-x"/></svg>
         </button>
-      </div>
+      </header>
+
       <div class="preferences-controls">
         <section class="preferences-section" aria-labelledby="preferences-appearance">
-          <h3 id="preferences-appearance">Apariencia</h3>
+          <div class="preferences-section-heading">
+            <h3 id="preferences-appearance">Apariencia</h3>
+            <p>Define cómo se ve y se siente tu espacio de trabajo.</p>
+          </div>
           <div class="preferences-grid">
-            <label class="option-control"><span>Tema</span><select id="preference-theme"><option value="dark">Oscuro</option><option value="light">Claro</option><option value="system">Sistema</option></select></label>
-            <label class="option-control"><span>Densidad</span><select id="preference-density"><option value="comfortable">Cómoda</option><option value="compact">Compacta</option></select></label>
+            <label class="preference-field">
+              <span class="preference-field-label">Tema</span>
+              <span class="preference-select">
+                <span class="preference-select-icon" aria-hidden="true">◐</span>
+                <select id="preference-theme" aria-label="Tema de la aplicación">
+                  <option value="dark">Oscuro</option>
+                  <option value="light">Claro</option>
+                  <option value="system">Sistema</option>
+                </select>
+              </span>
+            </label>
+            <label class="preference-field">
+              <span class="preference-field-label">Densidad</span>
+              <span class="preference-select">
+                <span class="preference-select-icon" aria-hidden="true">≡</span>
+                <select id="preference-density" aria-label="Densidad de la interfaz">
+                  <option value="comfortable">Cómoda</option>
+                  <option value="compact">Compacta</option>
+                </select>
+              </span>
+            </label>
           </div>
         </section>
+
         <section class="preferences-section" aria-labelledby="preferences-editor">
-          <h3 id="preferences-editor">Editor</h3>
-          <div class="preferences-grid">
-            <label class="option-control"><span>Tamaño de fuente</span><span class="preference-number"><input id="preference-font-size" type="number" min="11" max="20" value="13" aria-label="Tamaño de fuente del editor"> <small>px</small></span></label>
-            <label class="option-control preference-toggle"><input id="preference-wrap" type="checkbox" aria-label="Ajustar líneas del editor"><span>Ajustar líneas</span></label>
+          <div class="preferences-section-heading">
+            <h3 id="preferences-editor">Editor</h3>
+            <p>Optimiza el editor para tu forma de trabajar.</p>
+          </div>
+
+          <div class="preference-font-size">
+            <div>
+              <span class="preference-row-title">Tamaño de fuente</span>
+              <span class="preference-row-description">Ajusta la legibilidad del editor.</span>
+            </div>
+            <output class="font-size-value" id="preference-font-size-value" for="preference-font-size">13 px</output>
+            <label class="sr-only" for="preference-font-size">Tamaño de fuente del editor</label>
+            <input id="preference-font-size" type="range" min="11" max="20" value="13" step="1" aria-valuetext="13 píxeles">
+          </div>
+
+          <div class="preferences-switch-list">
+            <label class="preference-switch-row" for="preference-wrap">
+              <span><strong>Ajustar líneas automáticamente</strong><small>Evita el desplazamiento horizontal en textos largos.</small></span>
+              <input id="preference-wrap" type="checkbox" role="switch" aria-checked="false" aria-label="Ajustar líneas automáticamente">
+              <span class="switch-control" aria-hidden="true"></span>
+            </label>
+            <label class="preference-switch-row" for="preference-line-numbers">
+              <span><strong>Mostrar números de línea</strong><small>Facilita la referencia y revisión de payloads.</small></span>
+              <input id="preference-line-numbers" type="checkbox" role="switch" aria-checked="false" aria-label="Mostrar números de línea">
+              <span class="switch-control" aria-hidden="true"></span>
+            </label>
+            <label class="preference-switch-row" for="preference-syntax-highlight">
+              <span><strong>Resaltado de sintaxis</strong><small>Distingue claves, valores y estructuras JSON.</small></span>
+              <input id="preference-syntax-highlight" type="checkbox" role="switch" aria-checked="false" aria-label="Activar resaltado de sintaxis">
+              <span class="switch-control" aria-hidden="true"></span>
+            </label>
+            <label class="preference-switch-row" for="preference-autocomplete">
+              <span><strong>Autocompletado</strong><small>Prepara el editor para sugerencias inteligentes.</small></span>
+              <input id="preference-autocomplete" type="checkbox" role="switch" aria-checked="false" aria-label="Activar autocompletado">
+              <span class="switch-control" aria-hidden="true"></span>
+            </label>
           </div>
         </section>
-        <section class="preferences-section preferences-privacy" aria-labelledby="preferences-privacy">
-          <h3 id="preferences-privacy">Privacidad</h3>
-          <label class="option-control preference-toggle"><input id="preference-history" type="checkbox" aria-label="Activar historial local"><span><strong>Historial local</strong><small>Registra solo herramienta, estado y hora; nunca payloads ni resultados.</small></span></label>
+
+        <section class="preferences-section" aria-labelledby="preferences-privacy">
+          <div class="preferences-section-heading">
+            <h3 id="preferences-privacy">Datos y privacidad</h3>
+            <p>Todo el historial se mantiene únicamente en este navegador.</p>
+          </div>
+          <label class="preference-switch-row preference-history-toggle" for="preference-history">
+            <span><strong>Activar historial local</strong><small>Guarda herramienta, estado y hora; nunca payloads ni resultados.</small></span>
+            <input id="preference-history" type="checkbox" role="switch" aria-checked="false" aria-label="Activar historial local">
+            <span class="switch-control" aria-hidden="true"></span>
+          </label>
+
+          <article class="preferences-history" aria-labelledby="history-card-title">
+            <div class="history-card-heading">
+              <span class="history-card-icon" aria-hidden="true">◷</span>
+              <div>
+                <strong id="history-card-title">Historial local</strong>
+                <span id="history-status">Desactivado; no se guardan operaciones.</span>
+              </div>
+            </div>
+            <dl class="history-metrics">
+              <div><dt>Operaciones</dt><dd id="history-count">0</dd></div>
+              <div><dt>Espacio usado</dt><dd id="history-size">0 B</dd></div>
+              <div><dt>Actualizado</dt><dd id="history-updated">—</dd></div>
+            </dl>
+            <button class="button button-danger-soft" id="history-clear" type="button" aria-describedby="history-clear-hint">
+              <svg class="icon" aria-hidden="true" width="14" height="14"><use href="#icon-trash-2"/></svg>
+              <span>Limpiar historial</span>
+            </button>
+            <p class="history-clear-hint" id="history-clear-hint">Se solicitará confirmación antes de eliminar la actividad guardada.</p>
+          </article>
         </section>
-      </div>
-      <div class="preferences-history">
-        <div><strong>Actividad guardada</strong><span id="history-status">Desactivado; no se guardan operaciones.</span></div>
-        <button class="button button-ghost" id="history-clear" type="button">Limpiar historial</button>
       </div>
     </div>
   </dialog>

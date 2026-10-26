@@ -44,8 +44,11 @@ const elements = {
   inputTab: $("#input-tab"), outputTab: $("#output-tab"), editorWorkspace: $(".editor-workspace"),
   preferences: $("#preferences-dialog"), preferencesToggle: $("#preferences-toggle"), preferencesClose: $("#preferences-close"),
   preferenceTheme: $("#preference-theme"), preferenceDensity: $("#preference-density"),
-  preferenceWrap: $("#preference-wrap"), preferenceFontSize: $("#preference-font-size"),
+  preferenceWrap: $("#preference-wrap"), preferenceLineNumbers: $("#preference-line-numbers"),
+  preferenceSyntaxHighlight: $("#preference-syntax-highlight"), preferenceAutocomplete: $("#preference-autocomplete"),
+  preferenceFontSize: $("#preference-font-size"), preferenceFontSizeValue: $("#preference-font-size-value"),
   preferenceHistory: $("#preference-history"), historyStatus: $("#history-status"), historyClear: $("#history-clear"),
+  historyCount: $("#history-count"), historySize: $("#history-size"), historyUpdated: $("#history-updated"),
   commandClose: $("#command-close"), language: $("#language-select"),
   readyLabel: $("#ready-label"), tabHint: $("#tab-hint"), outputHint: $("#output-hint"),
   copyLabel: $("#copy-label"), downloadLabel: $("#download-label"), exampleLabel: $("#example-label"),
@@ -78,6 +81,7 @@ const drafts = new Map();
 let commandIndex = -1;
 let commandOrigin = null;
 let menuOrigin = null;
+let preferencesOrigin = null;
 
 function applyLanguage() {
   const language = getLanguage();
@@ -255,7 +259,7 @@ function renderEditorLayer(editor, lines, highlight) {
   const value = editor.value;
   const lineCount = Math.max(1, value.split("\n").length);
   lines.textContent = Array.from({ length: lineCount }, (_, index) => index + 1).join("\n");
-  highlight.innerHTML = `${highlightEditor(value)}\n`;
+  highlight.innerHTML = `${store.get("editorSyntaxHighlight") ? highlightEditor(value) : escapeEditorHtml(value)}\n`;
   highlight.parentElement.scrollTop = editor.scrollTop;
   highlight.parentElement.scrollLeft = editor.scrollLeft;
   lines.scrollTop = editor.scrollTop;
@@ -575,15 +579,20 @@ function applyPreferences() {
   const theme = resolvedTheme();
   const density = store.get("density");
   const wrap = store.get("editorWrap");
+  const lineNumbers = store.get("editorLineNumbers");
   const fontSize = Number(store.get("editorFontSize"));
 
   document.documentElement.dataset.theme = theme;
   document.documentElement.dataset.density = density;
   document.documentElement.classList.toggle("editor-wrap", wrap);
+  document.documentElement.classList.toggle("hide-line-numbers", !lineNumbers);
   document.documentElement.style.setProperty("--editor-font-size", `${fontSize}px`);
+  elements.input.autocomplete = store.get("editorAutocomplete") ? "on" : "off";
+  elements.output.autocomplete = store.get("editorAutocomplete") ? "on" : "off";
   elements.theme.setAttribute("aria-label", theme === "dark" ? t("themeToLight") : t("themeToDark"));
   document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#16191d" : "#ebece7";
   setThemeIcon(theme);
+  renderEditorLayers();
 }
 
 function historyEntries() {
@@ -594,11 +603,25 @@ function historyEntries() {
   }
 }
 
+function formatStorageSize(bytes) {
+  if (!bytes) return "0 B";
+  if (bytes < 1024) return `${bytes} B`;
+  return `${(bytes / 1024).toFixed(1)} KB`;
+}
+
 function updateHistoryStatus() {
   const entries = historyEntries();
+  const serializedHistory = localStorage.getItem(HISTORY_KEY) ?? "";
+  const latest = entries[0]?.at ? new Date(entries[0].at) : null;
+
   elements.historyStatus.textContent = store.get("historyEnabled")
     ? `${entries.length} operación(es) guardada(s); sin payloads ni resultados.`
     : "Desactivado; no se guardan operaciones.";
+  elements.historyCount.textContent = String(entries.length);
+  elements.historySize.textContent = formatStorageSize(new Blob([serializedHistory]).size);
+  elements.historyUpdated.textContent = latest
+    ? latest.toLocaleDateString(getLanguage(), { day: "2-digit", month: "short" })
+    : "—";
   elements.historyClear.disabled = !entries.length;
 }
 
@@ -613,13 +636,43 @@ function recordHistory(result) {
   updateHistoryStatus();
 }
 
+function syncSwitchAria(control) {
+  control.setAttribute("aria-checked", String(control.checked));
+}
+
+function updateFontSizeControl() {
+  const size = Number(elements.preferenceFontSize.value);
+  const progress = ((size - Number(elements.preferenceFontSize.min)) / (Number(elements.preferenceFontSize.max) - Number(elements.preferenceFontSize.min))) * 100;
+  elements.preferenceFontSize.style.setProperty("--range-progress", `${progress}%`);
+  elements.preferenceFontSizeValue.textContent = `${size} px`;
+  elements.preferenceFontSize.setAttribute("aria-valuetext", `${size} píxeles`);
+}
+
 function syncPreferencesDialog() {
   elements.preferenceTheme.value = store.get("theme");
   elements.preferenceDensity.value = store.get("density");
   elements.preferenceWrap.checked = store.get("editorWrap");
+  elements.preferenceLineNumbers.checked = store.get("editorLineNumbers");
+  elements.preferenceSyntaxHighlight.checked = store.get("editorSyntaxHighlight");
+  elements.preferenceAutocomplete.checked = store.get("editorAutocomplete");
   elements.preferenceFontSize.value = store.get("editorFontSize");
   elements.preferenceHistory.checked = store.get("historyEnabled");
+  [
+    elements.preferenceWrap,
+    elements.preferenceLineNumbers,
+    elements.preferenceSyntaxHighlight,
+    elements.preferenceAutocomplete,
+    elements.preferenceHistory,
+  ].forEach(syncSwitchAria);
+  updateFontSizeControl();
   updateHistoryStatus();
+}
+
+function closePreferences({ restoreFocus = true } = {}) {
+  if (!elements.preferences.open) return;
+  elements.preferences.close();
+  if (restoreFocus) preferencesOrigin?.focus();
+  preferencesOrigin = null;
 }
 
 function switchTheme() {
@@ -728,27 +781,73 @@ function bindEvents(router) {
   });
   elements.theme.addEventListener("click", switchTheme);
   elements.preferencesToggle.addEventListener("click", () => {
+    preferencesOrigin = elements.preferencesToggle;
     syncPreferencesDialog();
     elements.preferences.showModal();
+    elements.preferencesClose.focus();
   });
-  elements.preferencesClose.addEventListener("click", () => elements.preferences.close());
+  elements.preferencesClose.addEventListener("click", closePreferences);
   elements.historyClear.addEventListener("click", () => {
+    if (elements.historyClear.dataset.confirm !== "true") {
+      elements.historyClear.dataset.confirm = "true";
+      elements.historyClear.querySelector("span").textContent = "¿Confirmar limpieza?";
+      elements.historyClear.setAttribute("aria-label", "Confirmar limpieza del historial");
+      window.setTimeout(() => {
+        if (elements.historyClear.dataset.confirm !== "true") return;
+        delete elements.historyClear.dataset.confirm;
+        elements.historyClear.querySelector("span").textContent = "Limpiar historial";
+        elements.historyClear.removeAttribute("aria-label");
+      }, 4000);
+      return;
+    }
+    delete elements.historyClear.dataset.confirm;
+    elements.historyClear.querySelector("span").textContent = "Limpiar historial";
+    elements.historyClear.removeAttribute("aria-label");
     localStorage.removeItem(HISTORY_KEY);
     updateHistoryStatus();
+    toast("Historial local eliminado.", "success");
+  });
+  elements.preferences.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closePreferences();
   });
   elements.preferences.addEventListener("click", (event) => {
-    if (event.target === elements.preferences) elements.preferences.close();
+    if (event.target === elements.preferences) closePreferences();
+  });
+  elements.preferences.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab") return;
+    const focusable = [...elements.preferences.querySelectorAll("button:not(:disabled), select:not(:disabled), input:not(:disabled), [tabindex]:not([tabindex='-1'])")];
+    const first = focusable[0];
+    const last = focusable.at(-1);
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+  elements.preferenceFontSize.addEventListener("input", () => {
+    const size = Math.min(20, Math.max(11, Number(elements.preferenceFontSize.value) || 13));
+    store.set("editorFontSize", size, { persist: true });
+    updateFontSizeControl();
+    applyPreferences();
   });
   [
     [elements.preferenceTheme, "theme", (value) => value],
     [elements.preferenceDensity, "density", (value) => value],
     [elements.preferenceWrap, "editorWrap", (_, control) => control.checked],
+    [elements.preferenceLineNumbers, "editorLineNumbers", (_, control) => control.checked],
+    [elements.preferenceSyntaxHighlight, "editorSyntaxHighlight", (_, control) => control.checked],
+    [elements.preferenceAutocomplete, "editorAutocomplete", (_, control) => control.checked],
     [elements.preferenceFontSize, "editorFontSize", (value) => Math.min(20, Math.max(11, Number(value) || 13))],
     [elements.preferenceHistory, "historyEnabled", (_, control) => control.checked],
   ].forEach(([control, key, valueFor]) => {
     control.addEventListener("change", () => {
       store.set(key, valueFor(control.value, control), { persist: true });
+      if (control.matches('[role="switch"]')) syncSwitchAria(control);
       applyPreferences();
+      if (control === elements.preferenceFontSize) updateFontSizeControl();
       updateHistoryStatus();
     });
   });

@@ -1,7 +1,7 @@
 # 🛠️ PayloadForge
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.1.0-blueviolet" alt="Version 1.1.0" />
+  <img src="https://img.shields.io/badge/Version-1.2.0-blueviolet" alt="Version 1.2.0" />
   <img src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white" alt="HTML5" />
   <img src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white" alt="CSS3" />
   <img src="https://img.shields.io/badge/JavaScript-ES2023-F7DF1E?logo=javascript&logoColor=black" alt="JavaScript ES2023" />
@@ -104,8 +104,8 @@ The solution combines local parsing and transformation utilities, reusable core 
 - Session-only drafts isolated by tool.
 - Desktop editor resizing plus mobile Input/Output tabs.
 - Command palette, local examples, result copying, downloads, and share links.
-- Dark, light, and system themes; density, wrapping, and editor font-size preferences.
-- Optional local activity history that stores only tool ID, completion status, and timestamp.
+- Premium Preferences modal with dark, light, and system themes; density; font size; wrapping; line numbers; syntax highlighting; autocomplete; accessible switches; and focus-trapped keyboard navigation.
+- Optional local activity history with operation count, local storage usage, last update, and visual confirmation before clearing; it stores only tool ID, completion status, and timestamp.
 
 ---
 
@@ -173,7 +173,9 @@ The [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) workflow validate
 
 ### Browser extension
 
-The Manifest V3 browser extension provides local JSON formatting, Base64 encoding, secret redaction, copy support, and a selection context-menu action.
+The Manifest V3 browser extension provides local JSON formatting, Base64 encoding, secret redaction, copy support, a selection context-menu action, and a dedicated Preferences view in its popup.
+
+The popup Preferences view persists theme, density, editor font size, wrapping, syntax-highlighting preference, and opt-in metadata-only activity history through `chrome.storage.local`. It also exposes local-history metrics and an explicit clear confirmation.
 
 1. Run `npm run sync:core`.
 2. Open your browser extension manager (`chrome://extensions` or `edge://extensions`).
@@ -186,6 +188,8 @@ To create a distributable archive, zip the **contents** of `browser-extension/` 
 ### VS Code extension
 
 The VS Code extension exposes selection commands for JSON format/minify, Base64 encoding, secret redaction, and JSON → TypeScript generation.
+
+Run **PayloadForge: Open Preferences** from the Command Palette to open its native webview. It persists theme, density, font-size, wrapping, syntax-highlighting, and metadata-only local-history preferences through VS Code `globalState`; the history card reports operation count, storage usage, and latest update.
 
 ```bash
 cd vscode-extension

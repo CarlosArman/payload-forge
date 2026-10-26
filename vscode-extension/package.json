@@ -2,7 +2,7 @@
   "name": "payloadforge-vscode",
   "displayName": "PayloadForge",
   "description": "Offline API payload tools for Visual Studio Code.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "publisher": "payloadforge",
   "license": "MIT",
   "engines": {
@@ -18,6 +18,10 @@
       {
         "command": "payloadforge.open",
         "title": "PayloadForge: Open Toolkit"
+      },
+      {
+        "command": "payloadforge.preferences",
+        "title": "PayloadForge: Open Preferences"
       },
       {
         "command": "payloadforge.formatJson",
