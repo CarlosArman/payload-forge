@@ -1,7 +1,7 @@
 # 🛠️ PayloadForge
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Versi%C3%B3n-1.3.0-blueviolet" alt="Versión 1.3.0" />
+  <img src="https://img.shields.io/badge/Versi%C3%B3n-1.3.1-blueviolet" alt="Versión 1.3.1" />
   <img src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white" alt="HTML5" />
   <img src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white" alt="CSS3" />
   <img src="https://img.shields.io/badge/JavaScript-ES2023-F7DF1E?logo=javascript&logoColor=black" alt="JavaScript ES2023" />
@@ -53,7 +53,7 @@ El resultado es un ejemplo práctico de **ingeniería frontend offline-first par
 Este repositorio distribuye PayloadForge en tres superficies:
 
 - Una **aplicación web pública** y PWA instalable.
-- Una **extensión de navegador Manifest V3** para formato JSON, codificación Base64, redacción de secretos y acciones sobre selecciones.
+- Una **extensión de navegador Manifest V3** para formato JSON, codificación Base64, redacción de secretos y acciones sobre selecciones; su popup enlaza directamente a la aplicación web completa.
 - Una **extensión de VS Code** con comandos de selección para formato/minificación JSON, Base64, redacción de secretos y JSON → TypeScript.
 
 La solución combina utilidades locales de parseo y transformación, módulos core reutilizables, una interfaz SPA adaptable, editores sincronizados y validación mediante CI.
@@ -188,7 +188,9 @@ El workflow [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) valida el
 
 ### Extensión de navegador
 
-La extensión Manifest V3 ofrece formato JSON local, codificación Base64, redacción de secretos, copiado, una acción en el menú contextual de selección y una vista dedicada de Preferencias en su popup.
+La extensión Manifest V3 ofrece accesos rápidos para formato JSON local, codificación Base64, redacción de secretos, copiado, una acción en el menú contextual de selección y una vista dedicada de Preferencias en su popup.
+
+Su botón principal **Abrir aplicación completa** abre la PWA pública de PayloadForge con todas las herramientas disponibles. El popup se mantiene como una superficie ligera para las transformaciones más habituales.
 
 La vista de Preferencias del popup persiste tema, densidad, tamaño de fuente, ajuste de líneas, preferencia de resaltado sintáctico e historial de actividad opcional y solo de metadatos mediante `chrome.storage.local`. También muestra métricas del historial local y una confirmación explícita antes de limpiarlo.
 
@@ -198,20 +200,27 @@ La vista de Preferencias del popup persiste tema, densidad, tamaño de fuente, a
 4. Elige **Cargar descomprimida**.
 5. Selecciona el directorio [`browser-extension/`](./browser-extension/).
 
-Para generar un archivo distribuible, comprime el **contenido** de `browser-extension/` en `extensions/payloadforge-browser.zip`.
+El paquete generado para Chromium está disponible en `extensions/payloadforge-browser.zip`. Para recrearlo, sincroniza el núcleo compartido y comprime el **contenido** de `browser-extension/`:
+
+```bash
+node scripts/sync-core.mjs
+powershell -NoProfile -Command "Compress-Archive -Path 'browser-extension\*' -DestinationPath 'extensions\payloadforge-browser.zip' -Force"
+```
 
 ### Extensión de VS Code
 
 La extensión de VS Code incluye comandos sobre selecciones para formatear/minificar JSON, codificar Base64, redactar secretos y generar JSON → TypeScript.
 
-Ejecuta **PayloadForge: Open Preferences** desde la Paleta de comandos para abrir su webview nativo. Persiste tema, densidad, tamaño de fuente, ajuste de líneas, resaltado sintáctico e historial local solo de metadatos mediante `globalState` de VS Code; la tarjeta de historial muestra número de operaciones, espacio usado y última actualización.
+Abre el toolkit con **PayloadForge: Open Toolkit** desde la Paleta de comandos, o selecciona el icono de **PayloadForge** en la barra de actividad y usa la acción **Abrir PayloadForge Toolkit**. VS Code muestra la barra de actividad a la izquierda por defecto; puedes moverla a la derecha desde **Ver → Apariencia → Ubicación de barra de actividad → Derecha**.
+
+Ejecuta **PayloadForge: Open Preferences** desde la Paleta de comandos o desde la vista de PayloadForge en la barra de actividad para abrir su webview nativo. Persiste tema, densidad, tamaño de fuente, ajuste de líneas, resaltado sintáctico e historial local solo de metadatos mediante `globalState` de VS Code; la tarjeta de historial muestra número de operaciones, espacio usado y última actualización. Consulta la [guía de uso de la extensión](./vscode-extension/README.md) para ver todos los comandos e instrucciones de uso.
 
 ```bash
 cd vscode-extension
 npm run package
 ```
 
-El ciclo de empaquetado ejecuta automáticamente `npm run sync:core` antes de crear el paquete. Los artefactos `.vsix`, `.zip` y `.xpi` generados pertenecen a `extensions/`, directorio excluido de Git.
+El ciclo de empaquetado ejecuta automáticamente `npm run sync:core` antes de crear el paquete. El instalador generado para VS Code es `extensions/payloadforge-vscode.vsix`; instálalo desde VS Code con **Extensions: Install from VSIX...**. Los artefactos `.vsix`, `.zip` y `.xpi` generados pertenecen a `extensions/`, directorio excluido de Git.
 
 ---
 

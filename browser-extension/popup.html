@@ -27,6 +27,11 @@
       transition: transform .16s ease, border-color .16s ease, background .16s ease, box-shadow .16s ease;
     }
     .icon-button { width: 34px; padding: 0; font-size: 17px; }
+    .open-app-button { padding: 0 10px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .full-app-button { width: 100%; margin-top: 12px; padding: 10px 12px; border-color: var(--primary); background: var(--primary); color: #fff; font-size: 12px; font-weight: 750; text-align: left; }
+    .full-app-button span { display: block; margin-top: 3px; color: rgb(255 255 255 / 82%); font-size: 10px; font-weight: 500; }
+    .full-app-button:hover { background: var(--primary-hover); color: #fff; }
+    .topbar-actions { display: flex; align-items: center; gap: 7px; }
     button:hover { border-color: var(--primary); background: #26313e; transform: translateY(-1px); box-shadow: 0 5px 14px rgb(234 107 59 / 16%); }
     textarea {
       width: 100%; min-height: 96px; box-sizing: border-box; margin-top: 12px; padding: 10px;
@@ -68,7 +73,8 @@
 </head>
 <body data-density="comfortable">
   <main id="tool-view" class="view">
-    <header class="topbar"><div><h1>PayloadForge</h1><p class="subtitle">Transform text locally.</p></div><button id="preferences-toggle" class="icon-button" type="button" aria-label="Open preferences">⚙</button></header>
+    <header class="topbar"><div><h1>PayloadForge</h1><p class="subtitle">Transform text locally.</p></div><div class="topbar-actions"><button id="preferences-toggle" class="icon-button" type="button" aria-label="Open preferences">⚙</button></div></header>
+    <button id="open-app" class="full-app-button" type="button">Abrir aplicación completa ↗<span>Accede a todas las herramientas de PayloadForge.</span></button>
     <textarea id="input" aria-label="Input text" placeholder="Paste text or use the context menu selection…"></textarea>
     <div class="actions"><button type="button" data-action="format">Format JSON</button><button type="button" data-action="base64">Base64</button><button type="button" data-action="redact">Redact secrets</button></div>
     <textarea id="output" aria-label="Result" readonly placeholder="Result appears here…"></textarea>

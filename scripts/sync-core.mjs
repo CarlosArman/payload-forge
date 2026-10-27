@@ -1,10 +1,12 @@
 import { cp, mkdir, rm } from "node:fs/promises";
-import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { dirname, resolve } from "node:path";
 
-const coreSource = resolve("packages/core");
+const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const coreSource = resolve(repositoryRoot, "packages/core");
 const targets = [
-  resolve("browser-extension/core"),
-  resolve("vscode-extension/core"),
+  resolve(repositoryRoot, "browser-extension/core"),
+  resolve(repositoryRoot, "vscode-extension/core"),
 ];
 
 await Promise.all(targets.map(async (target) => {

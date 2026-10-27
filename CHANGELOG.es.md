@@ -6,6 +6,21 @@ Todos los cambios relevantes de este proyecto se documentarán en este archivo.
 
 El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/), y este proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 
+## [Sin publicar]
+
+## [1.3.1] - 2026-10-27
+
+### Añadido
+
+- Acción destacada **Abrir aplicación completa** en el popup de la extensión de navegador. Abre la PWA pública de PayloadForge y proporciona acceso a todas las herramientas desde la extensión de acciones rápidas.
+- Artefactos distribuibles de extensiones generados: `extensions/payloadforge-browser.zip` para navegadores basados en Chromium y `extensions/payloadforge-vscode.vsix` para Visual Studio Code.
+- Icono dedicado de **PayloadForge** y vista Toolkit en la barra de actividad de la extensión de VS Code, con acciones directas para abrir el toolkit y las preferencias.
+
+### Modificado
+
+- Actualizado el manifiesto de la extensión de VS Code con metadatos de descubrimiento para Marketplace y un README específico que documenta funcionalidades, comandos, privacidad e instrucciones de acceso.
+- Actualizada la documentación de instalación en inglés y español para distinguir los accesos rápidos de la extensión de navegador de la aplicación web completa, documentar las ubicaciones de los paquetes y los flujos de instalación, y explicar cómo abrir PayloadForge desde la barra de actividad de VS Code.
+
 ## [1.3.0] - 2026-10-26
 
 ### Añadido

@@ -1,5 +1,6 @@
 import { encodeBase64, formatJson, parseJson, redactSecrets } from "./core/index.js";
 
+const APP_URL = "https://carlosarman.github.io/payload-forge/";
 const PREFERENCES_KEY = "payloadforgePreferences";
 const HISTORY_KEY = "payloadforgeHistory";
 const MAX_HISTORY_ENTRIES = 20;
@@ -19,6 +20,7 @@ const elements = {
   preferencesView: $("#preferences-view"),
   preferencesToggle: $("#preferences-toggle"),
   preferencesClose: $("#preferences-close"),
+  openApp: $("#open-app"),
   input: $("#input"),
   output: $("#output"),
   status: $("#status"),
@@ -158,6 +160,9 @@ elements.copy.addEventListener("click", async () => {
 
 elements.preferencesToggle.addEventListener("click", openPreferences);
 elements.preferencesClose.addEventListener("click", closePreferences);
+elements.openApp.addEventListener("click", () => {
+  chrome.tabs.create({ url: APP_URL });
+});
 elements.fontSize.addEventListener("input", () => {
   preferences.fontSize = Number(elements.fontSize.value);
   savePreferences();

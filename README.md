@@ -1,7 +1,7 @@
 # 🛠️ PayloadForge
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.3.0-blueviolet" alt="Version 1.3.0" />
+  <img src="https://img.shields.io/badge/Version-1.3.1-blueviolet" alt="Version 1.3.1" />
   <img src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white" alt="HTML5" />
   <img src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white" alt="CSS3" />
   <img src="https://img.shields.io/badge/JavaScript-ES2023-F7DF1E?logo=javascript&logoColor=black" alt="JavaScript ES2023" />
@@ -53,7 +53,7 @@ The result is a practical example of **offline-first frontend engineering for AP
 This repository provides PayloadForge through three distribution surfaces:
 
 - A **public web application** and installable PWA.
-- A **Manifest V3 browser extension** for focused JSON formatting, Base64 encoding, secret redaction, and selection actions.
+- A **Manifest V3 browser extension** for focused JSON formatting, Base64 encoding, secret redaction, and selection actions; its popup links directly to the complete web application.
 - A **VS Code extension** with selection commands for JSON formatting/minification, Base64, secret redaction, and JSON → TypeScript.
 
 The solution combines local parsing and transformation utilities, reusable core modules, a responsive single-page interface, synchronized editors, and CI validation.
@@ -188,7 +188,9 @@ The [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) workflow validate
 
 ### Browser extension
 
-The Manifest V3 browser extension provides local JSON formatting, Base64 encoding, secret redaction, copy support, a selection context-menu action, and a dedicated Preferences view in its popup.
+The Manifest V3 browser extension provides focused local JSON formatting, Base64 encoding, secret redaction, copy support, a selection context-menu action, and a dedicated Preferences view in its popup.
+
+Its primary **Open full application** button opens the public PayloadForge PWA with every available tool. The popup remains a lightweight shortcut surface for the most common transformations.
 
 The popup Preferences view persists theme, density, editor font size, wrapping, syntax-highlighting preference, and opt-in metadata-only activity history through `chrome.storage.local`. It also exposes local-history metrics and an explicit clear confirmation.
 
@@ -198,20 +200,27 @@ The popup Preferences view persists theme, density, editor font size, wrapping, 
 4. Choose **Load unpacked**.
 5. Select the [`browser-extension/`](./browser-extension/) directory.
 
-To create a distributable archive, zip the **contents** of `browser-extension/` into `extensions/payloadforge-browser.zip`.
+The generated Chromium package is available at `extensions/payloadforge-browser.zip`. To recreate it, synchronize the shared core and zip the **contents** of `browser-extension/`:
+
+```bash
+node scripts/sync-core.mjs
+powershell -NoProfile -Command "Compress-Archive -Path 'browser-extension\*' -DestinationPath 'extensions\payloadforge-browser.zip' -Force"
+```
 
 ### VS Code extension
 
 The VS Code extension exposes selection commands for JSON format/minify, Base64 encoding, secret redaction, and JSON → TypeScript generation.
 
-Run **PayloadForge: Open Preferences** from the Command Palette to open its native webview. It persists theme, density, font-size, wrapping, syntax-highlighting, and metadata-only local-history preferences through VS Code `globalState`; the history card reports operation count, storage usage, and latest update.
+Open the toolkit with **PayloadForge: Open Toolkit** from the Command Palette, or select the **PayloadForge** icon in the Activity Bar and use the **Open PayloadForge Toolkit** action. VS Code displays the Activity Bar on the left by default; move it to the right through **View → Appearance → Activity Bar Position → Right**.
+
+Run **PayloadForge: Open Preferences** from the Command Palette or from the PayloadForge Activity Bar view to open its native webview. It persists theme, density, font-size, wrapping, syntax-highlighting, and metadata-only local-history preferences through VS Code `globalState`; the history card reports operation count, storage usage, and latest update. See the extension-specific [usage guide](./vscode-extension/README.md) for every command and usage instructions.
 
 ```bash
 cd vscode-extension
 npm run package
 ```
 
-The package lifecycle automatically runs `npm run sync:core` before packaging. Generated `.vsix`, `.zip`, and `.xpi` artifacts belong in `extensions/`, which is excluded from Git.
+The package lifecycle automatically runs `npm run sync:core` before packaging. The generated VS Code installer is `extensions/payloadforge-vscode.vsix`; install it from VS Code with **Extensions: Install from VSIX...**. Generated `.vsix`, `.zip`, and `.xpi` artifacts belong in `extensions/`, which is excluded from Git.
 
 ---
 
