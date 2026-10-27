@@ -8,6 +8,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.3.2] - 2026-10-27
+
+### Fixed
+
+- Improved contrast for the global-search keyboard hint and editor footer status, cursor-position, tab-hint, and output-status indicators to meet WCAG 2 AA requirements.
+- Assigned semantic group roles to the Favorites and Recent navigation containers so their accessible labels are valid.
+
 ## [1.3.1] - 2026-10-27
 
 ### Added

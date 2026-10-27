@@ -8,6 +8,13 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 
 ## [Sin publicar]
 
+## [1.3.2] - 2026-10-27
+
+### Corregido
+
+- Mejorado el contraste del atajo de teclado de búsqueda global y de los indicadores de estado, posición del cursor, ayuda de tabulación y estado de salida en los pies de editor para cumplir WCAG 2 AA.
+- Asignados roles semánticos de grupo a los contenedores de navegación de Favoritas y Recientes para que sus etiquetas accesibles sean válidas.
+
 ## [1.3.1] - 2026-10-27
 
 ### Añadido

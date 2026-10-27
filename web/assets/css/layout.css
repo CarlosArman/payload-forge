@@ -355,7 +355,7 @@
   min-height: 30px;
   padding: 0 var(--space-4);
   border-top: 1px solid var(--border);
-  color: var(--text-subtle);
+  color: var(--text-muted);
   font-family: var(--font-mono);
   font-size: 9px;
 }
