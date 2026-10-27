@@ -8,6 +8,12 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 
 ## [Sin publicar]
 
+## [1.3.3] - 2026-10-27
+
+### Corregido
+
+- Reemplazados los roles `group` de la navegación de Favoritas y Recientes por secciones nativas etiquetadas, conservando sus nombres accesibles y resolviendo la advertencia de HTML semántico de SonarQube.
+
 ## [1.3.2] - 2026-10-27
 
 ### Corregido

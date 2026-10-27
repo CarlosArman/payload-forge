@@ -2,7 +2,7 @@
   "name": "payloadforge-vscode",
   "displayName": "PayloadForge",
   "description": "Offline tools to format, minify, redact, encode, and generate TypeScript from API payloads in Visual Studio Code.",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "publisher": "payloadforge",
   "license": "MIT",
   "keywords": [

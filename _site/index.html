@@ -89,8 +89,14 @@
       <nav id="tool-navigation">
         <section class="nav-group nav-group-productivity" aria-labelledby="productivity-tools-title">
           <h2 id="productivity-tools-title">ACCESO RÁPIDO</h2>
-          <div class="nav-group-list nav-productivity-list" id="favorite-tools-list" role="group" aria-label="Herramientas favoritas"></div>
-          <div class="nav-group-list nav-productivity-list" id="recent-tools-list" role="group" aria-label="Herramientas recientes"></div>
+          <section class="nav-group-list nav-productivity-list" aria-labelledby="favorite-tools-title">
+            <h3 class="sr-only" id="favorite-tools-title">Herramientas favoritas</h3>
+            <div id="favorite-tools-list"></div>
+          </section>
+          <section class="nav-group-list nav-productivity-list" aria-labelledby="recent-tools-title">
+            <h3 class="sr-only" id="recent-tools-title">Herramientas recientes</h3>
+            <div id="recent-tools-list"></div>
+          </section>
         </section>
         <section class="nav-group" data-group="data">
           <h2><button class="nav-group-toggle" type="button" aria-expanded="true" aria-controls="data-tools-list"><span data-i18n="dataTools">Herramientas de datos</span><svg class="nav-group-chevron icon" aria-hidden="true" width="14" height="14"><use href="#icon-chevron-down"/></svg></button></h2>
