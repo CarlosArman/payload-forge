@@ -1,25 +1,95 @@
 export const MAX_EXPLORER_NODES = 1000;
 export const formatJson = (value) => JSON.stringify(value, null, 2);
 
+function scanJsonErrorLocation(input) {
+  let pos = 0;
+  function skipWs() { while (pos < input.length && /\s/.test(input[pos])) pos++; }
+  function readStr() {
+    if (input[pos] !== '"') return false;
+    pos++;
+    while (pos < input.length) {
+      if (input[pos] === '\\') { pos += 2; continue; }
+      if (input[pos++] === '"') return true;
+    }
+    return false;
+  }
+  function readVal() {
+    skipWs();
+    if (pos >= input.length) return false;
+    const ch = input[pos];
+    if (ch === '"') return readStr();
+    if (ch === '{') return readObj();
+    if (ch === '[') return readArr();
+    if (input.startsWith('true', pos)) { pos += 4; return true; }
+    if (input.startsWith('false', pos)) { pos += 5; return true; }
+    if (input.startsWith('null', pos)) { pos += 4; return true; }
+    if (ch === '-' || (ch >= '0' && ch <= '9')) {
+      while (pos < input.length && /[0-9.eE+\-]/.test(input[pos])) pos++;
+      return true;
+    }
+    return false;
+  }
+  function readObj() {
+    pos++;
+    skipWs();
+    if (pos < input.length && input[pos] === '}') { pos++; return true; }
+    while (pos < input.length) {
+      skipWs();
+      if (!readStr()) return false;
+      skipWs();
+      if (pos >= input.length || input[pos] !== ':') return false;
+      pos++;
+      if (!readVal()) return false;
+      skipWs();
+      if (pos < input.length && input[pos] === ',') { pos++; continue; }
+      if (pos < input.length && input[pos] === '}') { pos++; return true; }
+      return false;
+    }
+    return false;
+  }
+  function readArr() {
+    pos++;
+    skipWs();
+    if (pos < input.length && input[pos] === ']') { pos++; return true; }
+    while (pos < input.length) {
+      if (!readVal()) return false;
+      skipWs();
+      if (pos < input.length && input[pos] === ',') { pos++; continue; }
+      if (pos < input.length && input[pos] === ']') { pos++; return true; }
+      return false;
+    }
+    return false;
+  }
+  readVal();
+  const errorPos = Math.min(pos, input.length - 1);
+  const before = input.slice(0, errorPos);
+  const lines = before.split("\n");
+  return { line: lines.length, column: lines.at(-1).length + 1 };
+}
+
 export function parseJson(input) {
   try {
     return { value: JSON.parse(input) };
   } catch (error) {
-    // Chrome 109+ reports "... at line X column Y (char N)"
+    // Chrome 109+ format: "... at line X column Y ..."
     const lineColMatch = error.message.match(/at line (\d+) column (\d+)/i);
     if (lineColMatch) {
       const line = Number(lineColMatch[1]);
       const column = Number(lineColMatch[2]);
       return { error: `JSON inválido en línea ${line}, columna ${column}. ${error.message}`, line, column };
     }
-    // Legacy V8 format: "... at position N"
-    const posMatch = error.message.match(/position (\d+)/i);
-    if (!posMatch) return { error: "JSON inválido. Revisa comas, comillas y llaves." };
-    const position = Number(posMatch[1]);
-    const before = input.slice(0, position);
-    const line = before.split("\n").length;
-    const column = position - before.lastIndexOf("\n");
-    return { error: `JSON inválido en línea ${line}, columna ${column}. ${error.message}`, line, column };
+    // Legacy V8 format: "... position N" or "(char N)"
+    const posMatch = error.message.match(/(?:position|char)\s+(\d+)/i);
+    if (posMatch) {
+      const position = Number(posMatch[1]);
+      const before = input.slice(0, position);
+      const line = before.split("\n").length;
+      const column = position - before.lastIndexOf("\n");
+      return { error: `JSON inválido en línea ${line}, columna ${column}. ${error.message}`, line, column };
+    }
+    // Fallback: scan the JSON manually to find the error position
+    const location = scanJsonErrorLocation(input);
+    return { error: `JSON inválido en línea ${location.line}, columna ${location.column}. ${error.message}`, ...location };
   }
 }
 
