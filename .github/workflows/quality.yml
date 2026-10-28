@@ -62,8 +62,8 @@ jobs:
       - name: Capture and compare desktop/mobile visual baselines
         run: |
           mkdir -p visual-reports
-          npx --yes playwright@1.48.2 screenshot --device="Desktop Chrome" http://127.0.0.1:4173 visual-reports/desktop.png
-          npx --yes playwright@1.48.2 screenshot --device="iPhone 13" http://127.0.0.1:4173 visual-reports/mobile.png
+          npx --yes playwright@1.48.2 screenshot --browser chromium --device="Desktop Chrome" http://127.0.0.1:4173 visual-reports/desktop.png
+          npx --yes playwright@1.48.2 screenshot --browser chromium --device="iPhone 13" http://127.0.0.1:4173 visual-reports/mobile.png
           node scripts/compare-visual-baselines.mjs
 
       - name: Upload visual review artifacts and diffs
