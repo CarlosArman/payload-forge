@@ -8,6 +8,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.3.5] - 2026-10-27
+
+### Fixed
+
+- Updated the quality CI workflow to Node 22 so `chromedriver@156` engine requirements are satisfied, added a `browser-driver-manager install chrome` step to synchronize the Chrome and ChromeDriver versions before the axe-core WCAG audit, and installed `@playwright/test@1.48.2` locally so `import { test, expect }` in the E2E spec resolves correctly at runtime.
+- Added WebKit to the Playwright browser install step (`chromium webkit`) and specified `--browser chromium` for the Desktop Chrome screenshot so both device emulations (Desktop Chrome via Chromium, iPhone 13 via WebKit) have their required browser available.
+- Replaced the dynamic `getByRole("button", { name: "Eliminar" })` locator in the preset-removal E2E test with the stable `.preset-remove` CSS selector to prevent the locator from losing the element after the confirmation text changes.
+- Changed the onboarding translation assertion from `toHaveText` to `toContainText` for `.workflow-shortcuts`, which contains multiple shortcut entries.
+- Extended `parseJson` in `web/assets/js/utils.js` and `packages/core/json.js` with a lightweight manual JSON scanner as a final fallback for V8 engine versions (Chrome 109+) whose `JSON.parse` error messages do not include a character position, ensuring line and column information always appears in the input status.
+- Removed the unnecessary `\-` escape character from the numeric regex character class in both JSON parsing modules.
+
 ## [1.3.4] - 2026-10-27
 
 ### Changed

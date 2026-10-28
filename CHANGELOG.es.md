@@ -8,6 +8,17 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 
 ## [Sin publicar]
 
+## [1.3.5] - 2026-10-27
+
+### Corregido
+
+- Actualizado el workflow de calidad CI a Node 22 para satisfacer los requisitos de motor de `chromedriver@156`, añadido un paso `browser-driver-manager install chrome` para sincronizar las versiones de Chrome y ChromeDriver antes de la auditoría WCAG de axe-core, e instalado `@playwright/test@1.48.2` localmente para que `import { test, expect }` en el spec E2E se resuelva correctamente en tiempo de ejecución.
+- Añadido WebKit al paso de instalación de navegadores Playwright (`chromium webkit`) y especificado `--browser chromium` en la captura de escritorio para que ambas emulaciones de dispositivo (Desktop Chrome con Chromium, iPhone 13 con WebKit) dispongan del navegador requerido.
+- Reemplazado el locator dinámico `getByRole("button", { name: "Eliminar" })` en el test E2E de eliminación de preset por el selector CSS estable `.preset-remove`, evitando que el locator pierda el elemento al cambiar el texto de confirmación.
+- Cambiada la aserción de traducción de onboarding de `toHaveText` a `toContainText` para `.workflow-shortcuts`, que contiene varias entradas de atajos.
+- Extendida la función `parseJson` en `web/assets/js/utils.js` y `packages/core/json.js` con un scanner JSON manual ligero como fallback final para versiones del motor V8 (Chrome 109+) cuyo mensaje de error de `JSON.parse` no incluye posición de carácter, garantizando que la información de línea y columna siempre aparezca en el estado de entrada.
+- Eliminado el carácter de escape innecesario `\-` en la clase de caracteres de la regex de análisis numérico en ambos módulos de parseo JSON.
+
 ## [1.3.4] - 2026-10-27
 
 ### Cambios
