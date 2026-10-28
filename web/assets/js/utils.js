@@ -5,9 +5,17 @@ export function parseJson(input) {
   try {
     return { value: JSON.parse(input) };
   } catch (error) {
-    const match = error.message.match(/position (\d+)/i);
-    if (!match) return { error: "JSON inválido. Revisa comas, comillas y llaves." };
-    const position = Number(match[1]);
+    // Chrome 109+ reports "... at line X column Y (char N)"
+    const lineColMatch = error.message.match(/at line (\d+) column (\d+)/i);
+    if (lineColMatch) {
+      const line = Number(lineColMatch[1]);
+      const column = Number(lineColMatch[2]);
+      return { error: `JSON inválido en línea ${line}, columna ${column}. ${error.message}`, line, column };
+    }
+    // Legacy V8 format: "... at position N"
+    const posMatch = error.message.match(/position (\d+)/i);
+    if (!posMatch) return { error: "JSON inválido. Revisa comas, comillas y llaves." };
+    const position = Number(posMatch[1]);
     const before = input.slice(0, position);
     const line = before.split("\n").length;
     const column = position - before.lastIndexOf("\n");

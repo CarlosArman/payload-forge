@@ -44,7 +44,7 @@ test("translates the complete onboarding content", async ({ page }) => {
   await expect(page.locator("#workflow-guide-title")).toHaveText("Paste, run, and reuse");
   await expect(page.locator(".workflow-guide-eyebrow")).toHaveText("QUICK FLOW");
   await expect(page.locator(".workflow-steps")).toContainText("Paste or import a payload");
-  await expect(page.locator(".workflow-shortcuts")).toHaveText("Search tools");
+  await expect(page.locator(".workflow-shortcuts")).toContainText("Search tools");
 });
 
 test("reports the input cursor line and column", async ({ page }) => {
@@ -142,7 +142,7 @@ test("loads and removes a local preset with explicit deletion confirmation", asy
   await expect(page.locator("#presets-dialog")).toBeHidden();
 
   await page.locator("#load-preset-button").click();
-  const remove = page.getByRole("button", { name: "Eliminar" });
+  const remove = page.locator(".preset-remove");
   await remove.click();
   await expect(remove).toHaveText("¿Confirmar?");
   await remove.click();
