@@ -46,7 +46,9 @@ jobs:
       - name: Run Playwright product flows
         env:
           PAYLOADFORGE_E2E_URL: http://127.0.0.1:4173
-        run: npx --yes @playwright/test@1.48.2 test web/tests/e2e.spec.js --reporter=line
+        run: |
+          npm install --no-save @playwright/test@1.48.2
+          npx playwright test web/tests/e2e.spec.js --reporter=line
 
       - name: Upload Playwright report
         if: failure()
