@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1640 512" role="img" aria-labelledby="title desc">
+  <title id="title">PayloadForge light logo</title>
+  <desc id="desc">PayloadForge logo optimized for light interfaces.</desc>
+  <defs>
+    <radialGradient id="field" cx="50%" cy="34%" r="76%"><stop stop-color="#16243A"/><stop offset=".62" stop-color="#0D1829"/><stop offset="1" stop-color="#081120"/></radialGradient>
+    <linearGradient id="chevron" x1="250" y1="152" x2="403" y2="362" gradientUnits="userSpaceOnUse"><stop stop-color="#FF9B71"/><stop offset=".48" stop-color="#FF7A45"/><stop offset="1" stop-color="#E95E32"/></linearGradient>
+    <linearGradient id="sheen" x1="256" y1="0" x2="256" y2="512" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFFFF" stop-opacity=".07"/><stop offset=".42" stop-color="#FFFFFF" stop-opacity="0"/><stop offset="1" stop-color="#000000" stop-opacity=".14"/></linearGradient>
+  </defs>
+  <g transform="translate(48 48) scale(.8125)">
+    <rect width="512" height="512" rx="128" fill="url(#field)"/>
+    <rect width="512" height="512" rx="128" fill="url(#sheen)"/>
+    <rect x="1.25" y="1.25" width="509.5" height="509.5" rx="126.75" fill="none" stroke="#FFFFFF" stroke-opacity=".1" stroke-width="2.5"/>
+    <path d="M190 128c-33 0-51 18-51 52v39c0 29-13 47-41 57 28 10 41 28 41 57v39c0 34 18 52 51 52" fill="none" stroke="#FFFFFF" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M278 154 410 256 278 358 248 328 340 256 248 184Z" fill="url(#chevron)"/>
+    <path d="m278 174 106 82-106 82-10-10 92-72-92-72Z" fill="#081120" opacity=".42"/>
+    <path d="M278 154 410 256 278 358 248 328 340 256 248 184Z" fill="none" stroke="#FFB088" stroke-opacity=".32" stroke-width="2"/>
+  </g>
+  <g font-family="Inter, Geist, 'SF Pro Display', Arial, sans-serif" font-size="144" font-weight="700" letter-spacing="-6">
+    <text x="526" y="309" fill="#081120">Payload</text>
+    <text x="1099" y="309" fill="#E95E32">Forge</text>
+  </g>
+</svg>

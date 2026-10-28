@@ -8,6 +8,13 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 
 ## [Sin publicar]
 
+## [1.3.4] - 2026-10-27
+
+### Cambios
+
+- Refinada y sincronizada la identidad visual de PayloadForge en la PWA web, la extensión de navegador, la extensión de VS Code, los assets de Marketplace, favicons, iconos maskable y la salida de GitHub Pages.
+- Documentados el arte maestro, las variantes aprobadas, el sistema de color, las exportaciones por plataforma y las reglas de sincronización entre superficies en los README y el sistema de diseño.
+
 ## [1.3.3] - 2026-10-27
 
 ### Corregido

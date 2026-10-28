@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1640 512" role="img" aria-labelledby="title desc">
+  <title id="title">PayloadForge monochrome logo</title>
+  <desc id="desc">Single-color PayloadForge logo for constrained production.</desc>
+  <g transform="translate(48 48) scale(.8125)" fill="none" stroke="currentColor" stroke-linejoin="round">
+    <rect width="512" height="512" rx="128" fill="currentColor" stroke="none"/>
+    <path d="M194 126c-35 0-54 19-54 54v38c0 30-14 48-43 58 29 10 43 28 43 58v38c0 35 19 54 54 54" stroke="#081120" stroke-width="40" stroke-linecap="round"/>
+    <path d="M280 152 408 256 280 360 246 326 334 256 246 186Z" fill="#081120" stroke="none"/>
+    <path d="M280 174 378 256 280 338 270 328 356 256 270 184Z" fill="currentColor" stroke="none"/>
+  </g>
+  <text x="526" y="309" fill="currentColor" font-family="Inter, Geist, 'SF Pro Display', Arial, sans-serif" font-size="144" font-weight="700" letter-spacing="-6">PayloadForge</text>
+</svg>

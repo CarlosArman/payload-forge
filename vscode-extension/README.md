@@ -41,6 +41,10 @@ También puedes hacer clic derecho sobre una selección para acceder directament
 | `PayloadForge: Redact Secrets in Selection` | Oculta valores sensibles detectados, como tokens, claves y contraseñas. |
 | `PayloadForge: Generate TypeScript from JSON Selection` | Genera definiciones TypeScript a partir de la estructura JSON seleccionada. |
 
+## Identidad visual
+
+La extensión usa el icono maestro refinado de PayloadForge: llave JSON blanca, chevron naranja de transformación y contenedor navy redondeado. `media/payloadforge.svg` se usa en la barra de actividad; `media/payloadforge.png` (128 px) se usa para Marketplace. Ambos se actualizan junto con `assets/brand/payloadforge-icon.svg` y los demás artefactos de plataforma.
+
 ## Funcionalidades
 
 - **Operación offline:** las transformaciones se realizan localmente en VS Code.

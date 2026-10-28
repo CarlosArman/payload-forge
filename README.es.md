@@ -1,7 +1,7 @@
 # 🛠️ PayloadForge
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Versi%C3%B3n-1.3.3-blueviolet" alt="Versión 1.3.3" />
+  <img src="https://img.shields.io/badge/Versi%C3%B3n-1.3.4-blueviolet" alt="Versión 1.3.4" />
   <img src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white" alt="HTML5" />
   <img src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white" alt="CSS3" />
   <img src="https://img.shields.io/badge/JavaScript-ES2023-F7DF1E?logo=javascript&logoColor=black" alt="JavaScript ES2023" />
@@ -65,6 +65,18 @@ La solución combina utilidades locales de parseo y transformación, módulos co
 🔗 **Núcleo compartido:** [`packages/core/`](./packages/core/)  
 🔗 **README en inglés:** [`README.md`](./README.md)  
 🔗 **Registro de cambios:** [`CHANGELOG.es.md`](./CHANGELOG.es.md) · [Changelog en inglés](./CHANGELOG.md)
+
+---
+
+## 🎨 Identidad de marca
+
+PayloadForge utiliza una única identidad visual refinada y orientada a developers en la PWA web, la extensión de navegador, la extensión de VS Code, Marketplace y el sitio generado para Pages.
+
+- El icono conserva el concepto de **llave JSON + chevron de transformación hacia delante**: llave blanca, chevron naranja geométrica y contenedor cuadrado redondeado oscuro.
+- El fondo de producto es `#081120`; el naranja de acento es `#FF7A45`, con `#FF9B71` reservado para detalles de luz contenidos. El blanco es `#FFFFFF`.
+- El icono maestro es [`assets/brand/payloadforge-icon.svg`](./assets/brand/payloadforge-icon.svg). Sus copias de aplicación se sincronizan en `web/assets/icons/icon.svg`, `browser-extension/icons/payloadforge.svg` y `vscode-extension/media/payloadforge.svg`.
+- Las variantes de marca están en [`assets/brand/`](./assets/brand/): primaria horizontal, oscura, clara, vertical, monocromática, solo icono y favicon.
+- Las exportaciones por plataforma incluyen favicon de 16 px, PNG de navegador en 16/32/48/128 px, PNG de VS Code Marketplace de 128 px y PNG PWA/touch de 180/192/512 px. No edites manualmente los derivados: actualiza el arte maestro y regenera todas las exportaciones juntas.
 
 ---
 

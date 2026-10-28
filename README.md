@@ -1,7 +1,7 @@
 # 🛠️ PayloadForge
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.3.3-blueviolet" alt="Version 1.3.3" />
+  <img src="https://img.shields.io/badge/Version-1.3.4-blueviolet" alt="Version 1.3.4" />
   <img src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white" alt="HTML5" />
   <img src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white" alt="CSS3" />
   <img src="https://img.shields.io/badge/JavaScript-ES2023-F7DF1E?logo=javascript&logoColor=black" alt="JavaScript ES2023" />
@@ -65,6 +65,18 @@ The solution combines local parsing and transformation utilities, reusable core 
 🔗 **Shared core:** [`packages/core/`](./packages/core/)  
 🔗 **Spanish README:** [`README.es.md`](./README.es.md)  
 🔗 **Changelog:** [`CHANGELOG.md`](./CHANGELOG.md) · [Spanish changelog](./CHANGELOG.es.md)
+
+---
+
+## 🎨 Brand identity
+
+PayloadForge uses one refined developer-first visual identity across the web PWA, Browser Extension, VS Code extension, Marketplace, and generated Pages site.
+
+- The icon preserves the **JSON brace + forward transformation chevron** concept: white brace, orange geometric chevron, and dark rounded-square container.
+- The product background is `#081120`; accent orange is `#FF7A45`, with `#FF9B71` reserved for restrained highlight detail. White is `#FFFFFF`.
+- The master icon is [`assets/brand/payloadforge-icon.svg`](./assets/brand/payloadforge-icon.svg). Its application copies are synchronized at `web/assets/icons/icon.svg`, `browser-extension/icons/payloadforge.svg`, and `vscode-extension/media/payloadforge.svg`.
+- Brand variants live in [`assets/brand/`](./assets/brand/): primary horizontal, dark, light, vertical, monochrome, icon-only, and favicon.
+- Platform exports include a 16 px favicon, Browser Extension PNGs at 16/32/48/128 px, the VS Code Marketplace PNG at 128 px, and PWA/touch PNGs at 180/192/512 px. Do not hand-edit derived platform files; update the master artwork and regenerate exports together.
 
 ---
 

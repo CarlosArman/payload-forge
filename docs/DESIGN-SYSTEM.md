@@ -10,6 +10,18 @@ Guía de referencia para mantener una experiencia consistente de herramienta Saa
 4. **Local-first y confianza.** La interfaz comunica procesamiento local y evita sugerir que payloads salen del navegador.
 5. **Accesibilidad por defecto.** Focus visible, contraste AA, teclado y estados semánticos son requisitos de cada componente.
 
+## Identidad de marca e iconografía
+
+La marca PayloadForge forma parte del sistema de producto y no es un recurso decorativo independiente.
+
+- **Concepto invariable:** llave JSON blanca + chevron geométrica naranja de transformación hacia delante dentro de un cuadrado redondeado oscuro.
+- **Arte maestro:** `assets/brand/payloadforge-icon.svg`. Las variantes aprobadas están en `assets/brand/` y conservan la misma geometría base.
+- **Color:** fondo `#081120`, blanco `#FFFFFF`, naranja primario `#FF7A45` y naranja secundario `#FF9B71`. El naranja es un acento; glow, sombras y degradados deben ser mínimos.
+- **Wordmark:** `Payload` en blanco y `Forge` en naranja, con una sans geométrica de alta legibilidad equivalente a Inter, Geist o SF Pro Display.
+- **Tamaños críticos:** favicon 16 px; Browser Extension 16/32/48/128 px; Marketplace y desktop 128 px; PWA 192/512 px; touch icon 180 px. Para 16 px se utiliza la variante favicon sin detalle ni efecto fino.
+- **Distribución:** los SVG de web, Browser Extension y VS Code deben ser idénticos al icono maestro. Los PNG son derivados y se regeneran al actualizar la marca. Ejecuta `node scripts/build-site.mjs` después para sincronizar `_site/`.
+- **No rediseñar por superficie:** ninguna aplicación crea una interpretación alternativa de la llave, chevron, radio, colores o wordmark.
+
 ## Tokens
 
 Fuente: `web/assets/css/variables.css`.
