@@ -1,6 +1,14 @@
 # graphify
 .graphify/
 
+# Editor configuration
+.vscode/
+
+# Dependencies
+node_modules/
+vscode-extension/node_modules/
+vscode-extension/package-lock.json
+
 # Compiled extension packages
 extensions/*.vsix
 extensions/*.zip
@@ -9,3 +17,7 @@ extensions/*.xpi
 # Generated extension copies of the shared ESM core
 browser-extension/core/
 vscode-extension/core/
+
+# Stray nested copies created by erroneous sync runs
+vscode-extension/browser-extension/
+vscode-extension/vscode-extension/
