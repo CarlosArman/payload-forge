@@ -24,7 +24,7 @@ function scanJsonErrorLocation(input) {
     if (input.startsWith('false', pos)) { pos += 5; return true; }
     if (input.startsWith('null', pos)) { pos += 4; return true; }
     if (ch === '-' || (ch >= '0' && ch <= '9')) {
-      while (pos < input.length && /[0-9.eE+\-]/.test(input[pos])) pos++;
+      while (pos < input.length && /[0-9.eE+-]/.test(input[pos])) pos++;
       return true;
     }
     return false;
