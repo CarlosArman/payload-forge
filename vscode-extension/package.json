@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/CarlosArman/payload-forge/issues"
   },
-  "markdown": "markdown",
+  "markdown": "github",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -47,7 +47,8 @@
       "payloadforge": [
         {
           "id": "payloadforge.welcome",
-          "name": "Toolkit"
+          "name": "Toolkit",
+          "icon": "media/payloadforge.svg"
         }
       ]
     },
